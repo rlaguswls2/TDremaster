@@ -11,7 +11,7 @@ initServer()
       console.log(`Sever is on ${HOST}:${PORT}`);
     });
   })
-  .catch((error) => {
-    console.error(error);
+  .catch((e) => {
+    console.error(e);
     process.exit(1);
   });
