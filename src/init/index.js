@@ -8,7 +8,7 @@ const initServer = async () => {
     await loadProtos();
     const gameId = uuidv4();
     const gameSession = addGameSession(gameId);
-    await testConnection();
+    //await testConnection();
     console.log(gameSession);
   } catch (error) {
     console.error(error);
