@@ -1,18 +1,15 @@
-import { HANDLER_IDS } from '../constants/handlerIds.js';
 import { PACKET_TYPE } from '../constants/header.js';
 import login from './auth/login.handler.js';
-import locationUpdateHandler from './game/locationUpdate.handler.js';
-import matchStartNotification from './game/matchStart.notification.js';
-import initialHandler from './user/initial.handler.js';
+import matching from './game/match.handler.js';
 
 const handlers = {
-  [PACKET_TYPE.MATCH_START_NOTIFICATION]: {
-    handler: matchStartNotification,
-    protoType: 'test.S2CMatchStartNotification',
-  },
   [PACKET_TYPE.LOGIN_REQUEST]: {
     handler: login,
     protoType: 'test.C2SLoginRequest',
+  },
+  [PACKET_TYPE.MATCH_REQUEST]: {
+    handler: matching,
+    protoType: 'test.C2SMatchRequest',
   },
 };
 
