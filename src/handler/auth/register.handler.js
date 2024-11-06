@@ -31,7 +31,7 @@ const register = ({ socket, payload }) => {
     // 회원가입 로직 처리 (예: ID와 비밀번호 검증)
     const success = true; // 회원가입 성공 여부를 예시로 설정
     const message = success ? 'Register successful.' : 'Register failed.';
-    const jwtToken=jwt.sign({email,id});
+    const jwtToken=jwt.sign({email,id},"SECRET_KEY,",{ expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     
     // const token = success ? 'some-generated-token' : ''; // 로그인 성공 시 토큰 생성
     // const failCode = success
