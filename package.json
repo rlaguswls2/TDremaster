@@ -17,6 +17,7 @@
   "type": "module",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "mysql2": "^3.11.3",
     "protobufjs": "^7.4.0",

@@ -1,5 +1,6 @@
 import { PACKET_TYPE } from '../constants/header.js';
 import login from './auth/login.handler.js';
+import register from './auth/register.handler.js';
 import matching from './game/match.handler.js';
 
 const handlers = {
@@ -11,6 +12,10 @@ const handlers = {
     handler: matching,
     protoType: 'test.C2SMatchRequest',
   },
+  [PACKET_TYPE.REGISTER_REQUEST]: {
+    handler: register,
+    protoType: 'test.CS2RegisterRequest',
+  }
 };
 
 export const getHandlerByPacketType = (packetType) => {
