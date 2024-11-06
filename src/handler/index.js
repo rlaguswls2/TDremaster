@@ -1,28 +1,31 @@
 import { HANDLER_IDS } from '../constants/handlerIds.js';
+import { PACKET_TYPE } from '../constants/header.js';
+import login from './auth/login.handler.js';
 import locationUpdateHandler from './game/locationUpdate.handler.js';
+import matchStartNotification from './game/matchStart.notification.js';
 import initialHandler from './user/initial.handler.js';
 
 const handlers = {
-  [HANDLER_IDS.INITIAL]: {
-    handler: initialHandler,
-    protoType: 'initial.InitialPayload',
+  [PACKET_TYPE.MATCH_START_NOTIFICATION]: {
+    handler: matchStartNotification,
+    protoType: 'test.S2CMatchStartNotification',
   },
-  [HANDLER_IDS.LOCATION_UPDATE]: {
-    handler: locationUpdateHandler,
-    protoType: 'game.LocationUpdatePayload',
+  [PACKET_TYPE.LOGIN_REQUEST]: {
+    handler: login,
+    protoType: 'test.C2SLoginRequest',
   },
 };
 
-export const getHandlerById = (handlerId) => {
-  if (!handlers[handlerId]) {
+export const getHandlerByPacketType = (packetType) => {
+  if (!handlers[packetType]) {
     throw Error();
   }
-  return handlers[handlerId].handler;
+  return handlers[packetType].handler;
 };
 
-export const getProtoTypeNameByHandlerId = (handlerId) => {
-  if (!handlers[handlerId]) {
+export const getProtoTypeNameByHandlerId = (packetType) => {
+  if (!handlers[packetType]) {
     throw Error();
   }
-  return handlers[handlerId].protoType;
+  return handlers[packetType].protoType;
 };
