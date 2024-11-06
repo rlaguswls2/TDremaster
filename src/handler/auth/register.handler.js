@@ -24,14 +24,14 @@ const register = ({ socket, payload }) => {
     if(password!==passwordConfirm){
         throw new Error('Dismatch password passwordConfirm.');
     }
-    console.log(`in loginHandler.js data: ${email}, ${id}, ${password}`);
+    //값이 제대로 들어갔는지 확인
+    console.log(`in registerHandler.js data: ${email}, ${id}, ${password} ${passwordConfirm}`);
 
-    // id와 password로 인증 로직 처리
 
     // 회원가입 로직 처리 (예: ID와 비밀번호 검증)
-    const success = true; // 회원가입 성공 여부를 예시로 설정
-    const message = success ? 'Register successful.' : 'Register failed.';
-    const jwtToken=jwt.sign({email,id},"SECRET_KEY,",{ expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
+    // const success = true; // 회원가입 성공 여부를 예시로 설정
+    // const message = success ? 'Register successful.' : 'Register failed.';
+    const jwtToken=jwt.sign({email,id},"SECRET_KEY",{ expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     
     // const token = success ? 'some-generated-token' : ''; // 로그인 성공 시 토큰 생성
     // const failCode = success
@@ -40,13 +40,27 @@ const register = ({ socket, payload }) => {
 
     // S2CRegisterResponse 메시지 생성 및 직렬화
     const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
-    const responsePayload = S2CRegisterResponse.create({ success, message,jwtToken });// token, failCode
+    const responsePayload = S2CRegisterResponse.create({ 
+      success:true,
+       message:'Register successful',
+       jwtToken });//
 
     sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
       registerResponse: responsePayload,
     });
   } catch (error) {
+    //register실패시 
     console.error('Error handling register request:', error);
+
+    const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
+    const responsePayload = S2CRegisterResponse.create({ 
+      success:false,
+       message:'Register failed',
+       jwtToken:'', });// 실패시 넘겨줄 response
+
+    sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
+      registerResponse: responsePayload,
+    });
   }
 };
 
