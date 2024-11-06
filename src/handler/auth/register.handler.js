@@ -33,6 +33,15 @@ const register = ({ socket, payload }) => {
     // const message = success ? 'Register successful.' : 'Register failed.';
     const jwtToken=jwt.sign({email,id},"SECRET_KEY",{ expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     
+    //db에 회원가입 정보 채울 공간
+
+
+
+
+
+
+
+
     // const token = success ? 'some-generated-token' : ''; // 로그인 성공 시 토큰 생성
     // const failCode = success
     //   ? protoMessages.test.GlobalFailCode.NONE
@@ -41,9 +50,9 @@ const register = ({ socket, payload }) => {
     // S2CRegisterResponse 메시지 생성 및 직렬화
     const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
     const responsePayload = S2CRegisterResponse.create({ 
-      success:true,
-       message:'Register successful',
-       jwtToken });//
+      id:id,
+      password:password,
+      email:email, });//
 
     sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
       registerResponse: responsePayload,
@@ -54,9 +63,9 @@ const register = ({ socket, payload }) => {
 
     const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
     const responsePayload = S2CRegisterResponse.create({ 
-      success:false,
-       message:'Register failed',
-       jwtToken:'', });// 실패시 넘겨줄 response
+      id:'',
+      password:'',
+      email:'', });// 실패시 넘겨줄 response
 
     sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
       registerResponse: responsePayload,
