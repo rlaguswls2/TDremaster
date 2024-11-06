@@ -1,24 +1,22 @@
+import { PACKET_NUMBER } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import { PACKET_TYPE, PACKET_TYPE_LENGTH, TOTAL_LENGTH } from '../../constants/header.js';
+import { serializer } from '../serializer.js';
 
-export const createResponse = (handlerId, responsecode, data = null) => {
-  const protoMessages = getProtoMessages();
-  const Response = protoMessages.response.Response;
+const sendResponsePacket = (socket, packetType, responseMessage) => {
+  try {
+    const protoMessages = getProtoMessages();
+    const GamePacket = protoMessages.test.GamePacket;
 
-  const response = {
-    handlerId,
-    responsecode,
-    timestamp: Date.now(),
-    data: data ? Buffer.from(JSON.stringify(data)) : null,
-  };
+    const responseGamePacket = GamePacket.create(responseMessage);
+    const gamePacketBuffer = GamePacket.encode(responseGamePacket).finish();
 
-  const buffer = Response.encode(response).finish();
+    const serializedPacket = serializer(gamePacketBuffer, packetType);
+    socket.write(serializedPacket);
 
-  const packetLength = Buffer.alloc(TOTAL_LENGTH);
-  packetLength.writeUint32BE(buffer.length + TOTAL_LENGTH + PACKET_TYPE_LENGTH, 0);
-
-  const packetType = Buffer.alloc(PACKET_TYPE_LENGTH);
-  packetType.writeUInt8(PACKET_TYPE.NORMAL, 0);
-
-  return Buffer.concat([packetLength, packetType, buffer]);
+    console.log(`Sent packet of type ${PACKET_NUMBER[packetType]} to client.`);
+  } catch (error) {
+    console.error('Error sending response packet', error);
+  }
 };
+
+export default sendResponsePacket;

@@ -1,6 +1,7 @@
 import { PACKET_TYPE, PACKET_TYPE_LENGTH } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { getGameSession } from '../../sessions/game.session.js';
+import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
 
 const login = ({ socket, payload }) => {
@@ -20,6 +21,7 @@ const login = ({ socket, payload }) => {
     console.log(`in loginHandler.js data: ${id}, ${password}`);
 
     // id와 password로 인증 로직 처리
+
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const success = true; // 로그인 성공 여부를 예시로 설정
     const message = success ? 'Login successful.' : 'Login failed.';
@@ -32,17 +34,9 @@ const login = ({ socket, payload }) => {
     const S2CLoginResponse = protoMessages.test.S2CLoginResponse;
     const responsePayload = S2CLoginResponse.create({ success, message, token, failCode });
 
-    // GamePacket으로 S2CLoginResponse를 감싸기
-    const responseGamePacket = GamePacket.create({
-      loginResponse: responsePayload, // GamePacket의 oneof payload 필드에 설정
+    sendResponsePacket(socket, PACKET_TYPE.LOGIN_RESPONSE, {
+      loginResponse: responsePayload,
     });
-
-    // GamePacket을 직렬화하여 전송
-    const gamePacketBuffer = GamePacket.encode(responseGamePacket).finish();
-    const packetType = PACKET_TYPE.LOGIN_RESPONSE;
-    const serializedPacket = serializer(gamePacketBuffer, packetType);
-    socket.write(serializedPacket);
-    console.log('Sent login response to client.');
   } catch (error) {
     console.error('Error handling login request:', error);
   }
