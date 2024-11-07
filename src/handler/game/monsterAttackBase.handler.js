@@ -2,9 +2,6 @@
 const monsterAttackBaseHandler = (packet) => {
   const { damage } = packet;
 
-  // 기지 HP 감소
-  baseState.hp -= damage;
-
   const baseState = getBaseState(); // 기지 상태를 가져오는 가상의 함수
   baseState.hp -= damage; // 기지 HP 감소
 
