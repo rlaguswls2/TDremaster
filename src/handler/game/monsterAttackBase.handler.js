@@ -23,9 +23,7 @@ const handleMonsterAttackRequest = ({ socket, packet }) => {
 };
 
 // 소켓 연결 시 클라이언트로부터 오는 메시지 리스너
-const setupSocketListeners = (socket) => {
-  console.log('소켓 객체:', socket);
-
+const setupSocketListeners = ({ socket }) => {
   socket.on(PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST, (packet) => {
     handleMonsterAttackRequest(socket, packet);
   });
