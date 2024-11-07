@@ -4,6 +4,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
+import { createUser } from "../../db/user/user.db.js";
 
 const register = ({ socket, payload }) => {
   try {
@@ -35,7 +36,7 @@ const register = ({ socket, payload }) => {
 
     //db에 회원가입 정보 채울 공간
 
-
+    createUser(email,id,password);
 
 
 
