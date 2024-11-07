@@ -6,7 +6,7 @@ import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
 import { createUser, findUserById } from "../../db/user/user.db.js";
 
-const register = ({ socket, payload }) => {
+const register = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
 
@@ -25,7 +25,8 @@ const register = ({ socket, payload }) => {
     const { email, id, password} = registerRequest;//email,id,password을 입력받는다. passwordConfirm을 일단 제외한다.
     console.log(`in registerHandler.js data: ${email}, ${id}, ${password}`);
     
-    if(findUserById(id)!==null)//null이면 중복이 없다는 뜻.
+    const existuser=await findUserById(id)
+    if(existuser!==null)//중복이 있으면 id 중복이 있다는 뜻
     {
       throw new Error("This id already exists!");
     }
