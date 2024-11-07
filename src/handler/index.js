@@ -13,11 +13,7 @@ const handlers = {
     handler: matching,
     protoType: 'test.C2SMatchRequest',
   },
-  /**
-        C2SSpawnMonsterRequest spawnMonsterRequest = 11;
-        S2CSpawnMonsterResponse spawnMonsterResponse = 12;
-        S2CSpawnEnemyMonsterNotification spawnEnemyMonsterNotification = 13; 
- **/
+
   [PACKET_TYPE.SPAWN_MONSTER_REQUEST]: {
     handler: spawnMonsterHandler,
     protoType: 'test.C2SSpawnMonsterRequest',
