@@ -21,26 +21,26 @@ export const createGameState = () => {
   const MonsterData = protoMessages.test.MonsterData;
   const Position = protoMessages.test.Position;
   const BaseData = protoMessages.test.BaseData;
-
+  
   const gameState = GameState.create({
     gold: 1000,
     base: BaseData.create({ hp: 100, maxHp: 100 }),
     highScore: 0,
     towers: [
-      TowerData.create({ towerId: 1, x: 0, y: 0 }),
-      TowerData.create({ towerId: 2, x: 1, y: 1 }),
-      TowerData.create({ towerId: 3, x: 2, y: 2 }),
+      TowerData.create({ towerId: 1, x: 200, y: 350 }),
+      TowerData.create({ towerId: 2, x: 400, y: 400 }),
+      TowerData.create({ towerId: 3, x: 800, y: 350 }),
     ],
     monsters: [MonsterData.create({ monsterId: 1, monsterNumber: 1, level: 1 })],
     monsterLevel: 1,
     score: 0,
     monsterPath: [
-      Position.create({ x: 0, y: 0 }),
-      Position.create({ x: 1, y: 1 }),
-      Position.create({ x: 2, y: 2 }),
-      Position.create({ x: 3, y: 3 }),
+      Position.create({ x: 200, y: 300 }),
+      Position.create({ x: 400, y: 350 }),
+      Position.create({ x: 800, y: 400 }),
+      Position.create({ x: 1400, y: 350 }),
     ],
-    basePosition: Position.create({ x: 0, y: 0 }),
+    basePosition: Position.create({ x: 1400, y: 350 }),
   });
 
   return gameState;
