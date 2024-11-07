@@ -2,6 +2,7 @@ import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { serializer } from '../../utils/serializer.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
+import { v4 as uuidv4 } from 'uuid';
 
 let gameState = {
   monsters: [],
@@ -10,15 +11,10 @@ let gameState = {
 // 몬스터 생성 요청 처리 핸들러
 const spawnMonsterHandler = (socket, packet) => {
   try {
-    //패킷확인용
-    if (!packet) {
-      console.error('패킷이 정의되지 않았습니다.');
-      return;
-    }
     console.log('수신한 패킷:', JSON.stringify(packet));
-
-    const { monsterId, monsterNumber } = packet;
-
+    const monsterId = 1;
+    const monsterNumber = 1;
+    console.log(`몬스터 생성: ID = ${monsterId}, 번호 = ${monsterNumber}`);
     // 몬스터 생성 로직 처리
     if (typeof monsterId !== 'number' || typeof monsterNumber !== 'number') {
       console.error('몬스터 생성에 실패했습니다. 필요한 정보가 부족합니다.');
@@ -42,9 +38,11 @@ const spawnMonsterHandler = (socket, packet) => {
       monsterNumber,
     });
 
+    console.log(`소켓:`, socket);
     sendResponsePacket(socket, PACKET_TYPE.SPAWN_MONSTER_RESPONSE, {
-      spawnMonsterResponse,
+      spawnMonsterResponse: spawnMonsterResponse,
     });
+
     console.log(`몬스터 생성 응답 전송: ID = ${monsterId}, 번호 = ${monsterNumber}`);
   } catch (error) {
     console.error('Error in spawnMonsterHandler:', error);
