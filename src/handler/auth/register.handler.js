@@ -4,7 +4,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
-import { createUser } from "../../db/user/user.db.js";
+import { createUser, findUserById } from "../../db/user/user.db.js";
 
 const register = ({ socket, payload }) => {
   try {
@@ -24,6 +24,11 @@ const register = ({ socket, payload }) => {
     // const { email, id, password, passwordConfirm } = registerRequest;
     const { email, id, password} = registerRequest;//email,id,password을 입력받는다. passwordConfirm을 일단 제외한다.
     console.log(`in registerHandler.js data: ${email}, ${id}, ${password}`);
+    
+    if(findUserById(id)!==null)//null이면 중복이 없다는 뜻.
+    {
+      throw new Error("This id already exists!");
+    }
 
     //비밀번호 비밀번호 확인이 일치하는지 확인
     // if (password !== passwordConfirm) {
@@ -37,11 +42,6 @@ const register = ({ socket, payload }) => {
     //db에 회원가입 정보 채울 공간
 
     createUser(email,id,password);
-
-
-
-
-
 
     // S2CRegisterResponse 메시지 생성 및 직렬화
     const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
@@ -59,16 +59,16 @@ const register = ({ socket, payload }) => {
     //register실패시 
     console.error('Error handling register request:', error);
 
-    const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
-    const responsePayload = S2CRegisterResponse.create({
-      id: '',
-      password: '',
-      email: '',
-    });// 실패시 넘겨줄 response
+    // const S2CRegisterResponse = protoMessages.test.S2CRegisterResponse;
+    // const responsePayload = S2CRegisterResponse.create({
+    //   id: '',
+    //   password: '',
+    //   email: '',
+    // });// 실패시 넘겨줄 response
 
-    sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
-      registerResponse: responsePayload,
-    });
+    // sendResponsePacket(socket, PACKET_TYPE.REGISTER_RESPONSE, {
+    //   registerResponse: responsePayload,
+    // });
   }
 };
 

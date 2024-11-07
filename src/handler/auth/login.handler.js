@@ -3,6 +3,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
+import jwt from 'jsonwebtoken';//jwt토큰 발급을 위한 jwt 임포트
 
 const login = ({ socket, payload }) => {
   try {
@@ -17,22 +18,23 @@ const login = ({ socket, payload }) => {
       throw new Error('Invalid payload type in GamePacket for login request.');
     }
 
-    const { id, password } = loginRequest;
+    const { id, password } = loginRequest;//id와 password를 받아온다.
     console.log(`in loginHandler.js data: ${id}, ${password}`);
+    
 
     // id와 password로 인증 로직 처리
 
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const success = true; // 로그인 성공 여부를 예시로 설정
     const message = success ? 'Login successful.' : 'Login failed.';
-    const token = success ? 'some-generated-token' : ''; // 로그인 성공 시 토큰 생성
+    const jwtToken = jwt.sign({ id, password }, "SECRET_KEY", { expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     const failCode = success
       ? protoMessages.test.GlobalFailCode.NONE
       : protoMessages.common.GlobalFailCode.AUTHENTICATION_FAILED;
 
     // S2CLoginResponse 메시지 생성 및 직렬화
     const S2CLoginResponse = protoMessages.test.S2CLoginResponse;
-    const responsePayload = S2CLoginResponse.create({ success, message, token, failCode });
+    const responsePayload = S2CLoginResponse.create({ success, message, jwtToken, failCode });
 
     sendResponsePacket(socket, PACKET_TYPE.LOGIN_RESPONSE, {
       loginResponse: responsePayload,
