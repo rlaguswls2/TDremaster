@@ -1,6 +1,4 @@
-// matchQueue.js - 매칭 큐 관리
-const matchQueue = [];
-const activePlayers = [];
+import { activePlayers, matchQueue } from './sessions.js';
 
 function addToMatchQueue(player) {
   matchQueue.push(player);
@@ -25,9 +23,9 @@ function getOpponentSocket(playerSocket) {
 function clearMatch(playerSocket) {
   for (let i = 0; i < activePlayers.length; i++) {
     if (activePlayers[i].playerA === playerSocket || activePlayers[i].playerB === playerSocket) {
-      activePlayers.splice(i, 1);
+      return activePlayers.splice(i, 1);
     }
   }
 }
 
-export { addToMatchQueue, clearMatch, getMatchPlayers, getOpponentSocket };
+export { addToMatchQueue, getMatchPlayers, getOpponentSocket, clearMatch };
