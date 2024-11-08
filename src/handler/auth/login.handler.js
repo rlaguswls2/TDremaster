@@ -5,7 +5,7 @@ import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
 import jwt from 'jsonwebtoken';//jwt토큰 발급을 위한 jwt 임포트
-
+import bcrypt from 'bcrypt';
 const login = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
@@ -34,7 +34,7 @@ const login = async ({ socket, payload }) => {
       console.log("Player is not exist!");
       success=false;
     }
-    if(password!==existuser.password)//비밀번호가 일치하는지 확인
+    if(!(await bcrypt.compare(password, existuser.password)))//비밀번호가 일치하는지 확인
     {
       console.log("pass word is dismatch!");
       success=false;
