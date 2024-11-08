@@ -1,12 +1,6 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import monsterAttackBaseHandler from './monsterAttackBase.handler.js';
 
-// 기지 상태를 관리하는 변수
-const INITIAL_BASE_HP = 100;
-let baseState = {
-  hp: INITIAL_BASE_HP,
-};
-
 // 몬스터 공격 요청 처리 핸들러
 const handleMonsterAttackRequest = ({ socket, packet }) => {
   try {
