@@ -21,7 +21,7 @@ export const createGameState = () => {
   const MonsterData = protoMessages.test.MonsterData;
   const Position = protoMessages.test.Position;
   const BaseData = protoMessages.test.BaseData;
-  
+
   const gameState = GameState.create({
     gold: 1000,
     base: BaseData.create({ hp: 100, maxHp: 100 }),

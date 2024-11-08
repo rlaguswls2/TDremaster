@@ -1,8 +1,13 @@
 import { PACKET_TYPE } from '../constants/header.js';
 import login from './auth/login.handler.js';
 import matching from './game/match.handler.js';
+
 import towerAttack from './game/towerAttack.handler.js';
 import towerPurchase from './game/towerPurchase.handler.js';
+
+import spawnMonsterHandler from './game/spawnMonster.handler.js';
+import monsterAttackBaseHandler from './game/monsterAttackBase.handler.js';
+
 
 const handlers = {
   [PACKET_TYPE.LOGIN_REQUEST]: {
@@ -13,6 +18,7 @@ const handlers = {
     handler: matching,
     protoType: 'test.C2SMatchRequest',
   },
+
   [PACKET_TYPE.TOWER_PURCHASE_REQUEST]:{
     handler: towerPurchase,
     protoType: 'test.C2STowerPurchaseRequest',
@@ -20,7 +26,22 @@ const handlers = {
   [PACKET_TYPE.TOWER_ATTACK_REQUEST]:{
     handler: towerAttack,
     protoType: 'test.C2STowerAttackRequest',
-  }
+  },
+
+
+  [PACKET_TYPE.SPAWN_MONSTER_REQUEST]: {
+    handler: spawnMonsterHandler,
+    protoType: 'test.C2SSpawnMonsterRequest',
+  },
+  [PACKET_TYPE.SPAWN_MONSTER_RESPONSE]: {
+    handler: undefined,
+    protoType: 'test.S2CSpawnMonsterResponse',
+  },
+  [PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST]: {
+    handler: monsterAttackBaseHandler,
+    protoType: 'test.C2SMonsterAttackBaseRequest',
+  },
+
 };
 
 export const getHandlerByPacketType = (packetType) => {
