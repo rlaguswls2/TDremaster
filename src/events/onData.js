@@ -1,6 +1,5 @@
 import {
   PACKET_NUMBER,
-  PAYLOAD_LENGTH_SIZE,
   SEQUENCE_SIZE,
   TOTAL_LENGTH,
   VERSION_START,
@@ -11,6 +10,7 @@ import { getHandlerByPacketType } from '../handler/index.js';
 export const onData = (socket) => async (data) => {
   socket.buffer = Buffer.concat([socket.buffer, data]);
   const initialHeaderLength = VERSION_START;
+
   while (socket.buffer.length > initialHeaderLength) {
     console.log(socket.buffer);
 
@@ -19,9 +19,10 @@ export const onData = (socket) => async (data) => {
     console.log(`packetType: ${PACKET_NUMBER[packetType]}`);
 
     const versionLength = socket.buffer.readUInt8(2);
-    //console.log(`versionLength: ${versionLength}`);
+    console.log(`versionLength: ${versionLength}`);
 
     const totalHeaderLength = TOTAL_LENGTH + versionLength;
+
     while (socket.buffer.length >= totalHeaderLength) {
       const version = socket.buffer.toString('utf8', VERSION_START, VERSION_START + versionLength);
       console.log(`version: ${version}`);
