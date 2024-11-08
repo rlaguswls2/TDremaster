@@ -32,12 +32,12 @@ const spawnMonsterHandler = ({ socket }) => {
     const opponentSocket = getOpponentSocket(socket);
     if (opponentSocket) {
       const S2CSpawnEnemyMonsterNotification = protoMessages.test.S2CSpawnEnemyMonsterNotification;
-      const spawnEnemyNotification = S2CSpawnEnemyMonsterNotification.create({
+      const spawnEnemyMonsterNotification = S2CSpawnEnemyMonsterNotification.create({
         monsterId,
         monsterNumber,
       });
       sendResponsePacket(opponentSocket, PACKET_TYPE.SPAWN_ENEMY_MONSTER_NOTIFICATION, {
-        spawnEnemyNotification,
+        spawnEnemyMonsterNotification,
       });
       console.log(`상대방에게 몬스터 생성 알림 전송: ID = ${monsterId}, 번호 = ${monsterNumber}`);
     } else {

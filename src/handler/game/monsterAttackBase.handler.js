@@ -46,12 +46,12 @@ const monsterAttackBaseHandler = ({ socket, payload }) => {
         updateBaseHpNotification: opponentUpdateBaseHpNotification,
       });
 
-      console.log(`상대방에게 기지 HP 업데이트 알림 전송: 현재 HP = ${damage}`);
+      console.log(`상대방에게 기지 HP 업데이트 알림 전송: 현재 HP = ${baseHp}`);
     } else {
       console.log('상대방 소켓을 찾을 수 없습니다.');
     }
 
-    console.log(`기지 HP 업데이트 전송: 현재 HP = ${damage}`);
+    console.log(`기지 HP 업데이트 전송: 현재 HP = ${baseHp}`);
   } catch (error) {
     console.error('몬스터 공격 처리 중 오류 발생:', error);
   }
