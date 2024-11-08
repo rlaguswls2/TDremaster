@@ -17,7 +17,7 @@ const handlers = {
   [PACKET_TYPE.REGISTER_REQUEST]: {
     handler: register,
     protoType: 'test.CS2RegisterRequest',
-  }
+  },
   [PACKET_TYPE.SPAWN_MONSTER_REQUEST]: {
     handler: spawnMonsterHandler,
     protoType: 'test.C2SSpawnMonsterRequest',
