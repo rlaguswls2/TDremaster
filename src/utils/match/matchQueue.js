@@ -2,13 +2,6 @@
 const matchQueue = [];
 const activePlayers = { playerA: null, playerB: null };
 
-export const user = {
-  socket: socket,
-  baseHp: INTIAL_BASE_HP,
-};
-
-user.baseHp = user.baseHp - damage;
-
 function addToMatchQueue(player) {
   matchQueue.push(player);
 }
