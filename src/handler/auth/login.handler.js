@@ -1,11 +1,12 @@
-import { PACKET_TYPE, PACKET_TYPE_LENGTH } from '../../constants/header.js';
-import { findUserById } from '../../db/user/user.db.js';
+import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
+import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
 import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import bcrypt from 'bcrypt';
+import { SECRET_KEY } from '../../constants/env.js';
+
 const login = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
