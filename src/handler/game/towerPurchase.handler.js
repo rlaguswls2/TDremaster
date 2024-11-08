@@ -1,5 +1,6 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
+import { getOpponentSocket } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 var towerId = 0;
@@ -26,9 +27,28 @@ const towerPurchase = ({ socket, payload }) => {
     const S2CTowerPurchaseResponse = protoMessages.test.S2CTowerPurchaseResponse;
     const responsePayload = S2CTowerPurchaseResponse.create({ towerId });
 
+    // 여기서 stateSyncNotification ??
+
     sendResponsePacket(socket, PACKET_TYPE.TOWER_PURCHASE_RESPONSE, {
       towerPurchaseResponse: responsePayload,
     });
+
+    // enemyTowerNotification
+    const opponentSocket = getOpponentSocket(socket);
+
+    const S2CAddEnemyTowerNotification = protoMessages.test.S2CAddEnemyTowerNotification;
+    const addEnemyTowerNotification = S2CAddEnemyTowerNotification.create({
+      towerId,
+      x,
+      y,
+    });
+
+    sendResponsePacket(opponentSocket, PACKET_TYPE.ADD_ENEMY_TOWER_NOTIFICATION, {
+      addEnemyTowerNotification,
+    });
+    console.log(
+      `Sent S2CAddEnemyTowerNotification to opponent: towerId=${towerId}, x=${x}, y=${y}`,
+    );
   } catch (e) {
     console.error(e);
   }
