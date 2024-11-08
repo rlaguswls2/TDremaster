@@ -2,7 +2,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 // import { createTowerId } from "./towerPurchase.handler.js";
 // import { generateUniqueMonsterId } from "./spawnMonster.handler.js"
 import { PACKET_TYPE } from '../../constants/header.js';
-import { getOpponentSocket } from '../../utils/match/matchQueue.js';
+import { getOpponentSocket } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 const towerAttack = ({ socket, payload }) => {
@@ -24,7 +24,7 @@ const towerAttack = ({ socket, payload }) => {
       monsterId: monsterId,
     });
 
-    const opponentSocket = getOpponentSocket();
+    const opponentSocket = getOpponentSocket(socket);
     sendResponsePacket(opponentSocket, PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION, {
       enemyTowerAttackNotification,
     });

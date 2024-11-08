@@ -48,7 +48,7 @@ const login = async ({ socket, payload }) => {
     // S2CLoginResponse 메시지 생성 및 직렬화
     const S2CLoginResponse = protoMessages.test.S2CLoginResponse;
     const responsePayload = S2CLoginResponse.create({ success, message, jwtToken, failCode });
-    updateUserLogin(id);
+    //updateUserLogin(id);
     sendResponsePacket(socket, PACKET_TYPE.LOGIN_RESPONSE, {
       loginResponse: responsePayload,
     });

@@ -1,8 +1,10 @@
+import { INITIAL_TOWER_COUNT } from '../../constants/gameState.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import { addToMatchQueue, getMatchPlayers } from '../../utils/match/matchQueue.js';
+import { addToMatchQueue, getMatchPlayers } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { createGameState, createInitialGameState } from '../../utils/state/createState.js';
+import { generateTowerIds } from './towerPurchase.handler.js';
 
 const matching = ({ socket, payload }) => {
   try {
@@ -14,8 +16,12 @@ const matching = ({ socket, payload }) => {
       const { playerA, playerB } = players;
 
       const initialGameState = createInitialGameState();
-      const A_GameState = createGameState();
-      const B_GameState = createGameState();
+
+      // 따로 init() 함수 만들 필요?
+      const A_towers = generateTowerIds(INITIAL_TOWER_COUNT);
+      const B_towers = generateTowerIds(INITIAL_TOWER_COUNT);
+      const A_GameState = createGameState(A_towers);
+      const B_GameState = createGameState(B_towers);
 
       const S2CMatchStartNotification = protoMessages.test.S2CMatchStartNotification;
       const A_MatchStartNotification = S2CMatchStartNotification.create({

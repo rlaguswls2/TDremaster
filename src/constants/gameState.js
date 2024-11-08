@@ -4,3 +4,5 @@ export const GAME_STATE = {
   INITIAL_GOLD: 5000,
   MONSTER_SPAWN_INTERVAL: 5,
 };
+
+export const INITIAL_TOWER_COUNT = 3;
