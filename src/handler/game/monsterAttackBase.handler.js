@@ -1,32 +1,60 @@
 import { PACKET_TYPE } from '../../constants/header.js';
-import monsterAttackBaseHandler from './monsterAttackBase.handler.js';
-
-// 기지 상태를 관리하는 변수
-const INITIAL_BASE_HP = 100;
-let baseState = {
-  hp: INITIAL_BASE_HP,
-};
+import { getProtoMessages } from '../../init/loadProto.js';
+import { getOpponentSocket } from '../../utils/match/matchQueue.js';
+import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 몬스터 공격 요청 처리 핸들러
-const handleMonsterAttackRequest = ({ socket, packet }) => {
+const monsterAttackBaseHandler = ({ socket, payload }) => {
   try {
-    const { damage } = packet;
+    const protoMessages = getProtoMessages();
 
-    // 몬스터 공격 핸들러 호출
-    monsterAttackBaseHandler({ damage });
+    if (!protoMessages || !protoMessages.test) {
+      console.error('ProtoBuf 메시지가 올바르게 로드되지 않았습니다.');
+      return;
+    }
 
-    // 클라이언트에 기지 HP 업데이트 알림 전송
-    socket.emit(PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, { baseHp: baseState.hp });
+    const GamePacket = protoMessages.test.GamePacket;
+    const gamePacket = GamePacket.decode(payload);
+    console.log(`Decoded GamePacket:`, gamePacket);
+
+    const damage = gamePacket.monsterAttackBaseRequest;
+
+    if (typeof damage === 'undefined') {
+      console.error('damage가 없습니다:', gamePacket);
+      return;
+    }
+
+    const S2CUpdateBaseHPNotification = protoMessages.test.S2CUpdateBaseHPNotification;
+    const updateBaseHpNotification = S2CUpdateBaseHPNotification.create({
+      isOpponent: false,
+      baseHp: damage,
+    });
+
+    sendResponsePacket(socket, PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, {
+      updateBaseHpNotification,
+    });
+
+    //★ 상대방 소켓 ★
+    const opponentSocket = getOpponentSocket(socket);
+    if (opponentSocket) {
+      const opponentUpdateBaseHpNotification = S2CUpdateBaseHPNotification.create({
+        isOpponent: true, // 상대방이므로 true
+        baseHp: damage, // 클라이언트가 보낸 damage 사용
+      });
+
+      sendResponsePacket(opponentSocket, PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, {
+        updateBaseHpNotification: opponentUpdateBaseHpNotification,
+      });
+
+      console.log(`상대방에게 기지 HP 업데이트 알림 전송: 현재 HP = ${baseHp}`);
+    } else {
+      console.log('상대방 소켓을 찾을 수 없습니다.');
+    }
+
+    console.log(`기지 HP 업데이트 전송: 현재 HP = ${baseHp}`);
   } catch (error) {
-    console.error('몬스터 공격 요청 처리 중 오류 발생:', error);
+    console.error('몬스터 공격 처리 중 오류 발생:', error);
   }
 };
 
-// 소켓 연결 시 클라이언트로부터 오는 메시지 리스너
-const setupSocketListeners = ({ socket }) => {
-  socket.on(PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST, (packet) => {
-    handleMonsterAttackRequest(socket, packet);
-  });
-};
-
-export default setupSocketListeners;
+export default monsterAttackBaseHandler;

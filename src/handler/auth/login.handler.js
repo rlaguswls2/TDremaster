@@ -25,10 +25,11 @@ const login = async ({ socket, payload }) => {
 
     //user가 존재하는지 확인
     const success = true; // 로그인 성공 여부를 예시로 설정
-    // const existuser=await findUserById(id);
 
-    // // id와 password로 인증 로직 처리
+    // id와 password로 인증 로직 처리
 
+    // ★★ 나중에 풀어야함=========================================================================================================================
+    //const existuser = await findUserById(id);
     // if(existuser===null)//id가 일치하는지 확인
     // {
     //   console.log("Player is not exist!");
@@ -39,9 +40,10 @@ const login = async ({ socket, payload }) => {
     //   console.log("pass word is dismatch!");
     //   success=false;
     // }
+
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const message = success ? 'Login successful.' : 'Login failed.';
-    const jwtToken = jwt.sign({ id, password }, SECRET_KEY, { expiresIn: '1h' }); //SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
+    const jwtToken = jwt.sign({ id, password }, 'SECRET_KEY', { expiresIn: '1h' }); //SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     const failCode = success
       ? protoMessages.test.GlobalFailCode.NONE
       : protoMessages.common.GlobalFailCode.AUTHENTICATION_FAILED;
