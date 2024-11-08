@@ -1,10 +1,4 @@
-import {
-  PACKET_NUMBER,
-  SEQUENCE_SIZE,
-  TOTAL_LENGTH,
-  VERSION_START,
-  PACKET_NUMBER,
-} from '../constants/header.js';
+import { PACKET_NUMBER, SEQUENCE_SIZE, TOTAL_LENGTH, VERSION_START } from '../constants/header.js';
 import { getHandlerByPacketType } from '../handler/index.js';
 
 export const onData = (socket) => async (data) => {
@@ -15,7 +9,6 @@ export const onData = (socket) => async (data) => {
     console.log(socket.buffer);
 
     const packetType = socket.buffer.readUInt16BE(0);
-
     console.log(`packetType: ${PACKET_NUMBER[packetType]}`);
 
     const versionLength = socket.buffer.readUInt8(2);
