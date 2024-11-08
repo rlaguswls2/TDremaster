@@ -37,7 +37,7 @@ const spawnMonsterHandler = ({ socket }) => {
 
 // 고유한 몬스터 ID를 생성하는 함수
 let currentMonsterId = 1; // 몬스터 ID의 초기값
-const generateUniqueMonsterId = () => {
+export const generateUniqueMonsterId = () => {
   return currentMonsterId++; // 현재 ID를 반환하고 증가시킴
 };
 export default spawnMonsterHandler;

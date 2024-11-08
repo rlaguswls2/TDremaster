@@ -39,4 +39,4 @@ export const createTowerId = () => {
     return firstTowerId++;
 };
 
-export default {towerPurchase, createTowerId}; 
+export default towerPurchase; 

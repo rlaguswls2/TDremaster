@@ -27,6 +27,10 @@ const handlers = {
     handler: towerAttack,
     protoType: 'test.C2STowerAttackRequest',
   },
+  [PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION]:{
+    handler: towerAttack,
+    protoType: 'test.S2CEnemyTowerAttackNotification',
+  },
 
 
   [PACKET_TYPE.SPAWN_MONSTER_REQUEST]: {
