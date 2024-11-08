@@ -17,8 +17,8 @@ export const createUser = async (email,id,password) => {
   return { email,id,password };
 };
 
-export const updateUserLogin = async (deviceId) => {
-  await dbPool.query(USER_QUERIES.UPDATE_USER_LOGIN, [deviceId]);
+export const updateUserLogin = async (id) => {
+  await dbPool.query(USER_QUERIES.UPDATE_USER_LOGIN, [id]);
 };
 
 export const updateUserLocation = async (x, y, deviceId) => {
