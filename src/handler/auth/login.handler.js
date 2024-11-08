@@ -1,12 +1,8 @@
 import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
-import { SECRET_KEY } from '../../constants/env.js';
 import { PACKET_TYPE } from '../../constants/header.js';
+import { updateUserLogin } from '../../db/user/user.db.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
-import { serializer } from '../../utils/serializer.js';
-import bcrypt from 'bcrypt';
-import { SECRET_KEY } from '../../constants/env.js';
-import { updateUserLogin } from '../../db/user/user.db.js';
 
 const login = async ({ socket, payload }) => {
   try {
