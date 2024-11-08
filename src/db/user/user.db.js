@@ -12,7 +12,7 @@ export const findUserById = async (id) => {
 };
 
 export const createUser = async (email,id,password) => {
-  console.log("createUddddser:",email,id,password);
+  console.log("createUser:",email,id,password);
   await dbPool.query(USER_QUERIES.CREATE_USER, [email,id,password]);
   return { email,id,password };
 };
