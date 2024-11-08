@@ -1,6 +1,6 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import { serializer } from '../../utils/serializer.js';
+import { getOpponentSocket } from '../../utils/match/matchQueue.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 몬스터 생성 요청 처리 핸들러
@@ -13,7 +13,6 @@ const spawnMonsterHandler = ({ socket }) => {
       console.error('몬스터 생성에 실패했습니다. 필요한 정보가 부족합니다.');
       return;
     }
-    console.log(`몬스터 생성: ID = ${monsterId}, 번호 = ${monsterNumber}`);
     const protoMessages = getProtoMessages();
     // protoMessages가 올바르게 로드되었는지 확인
     if (!protoMessages || !protoMessages.test) {
@@ -27,8 +26,23 @@ const spawnMonsterHandler = ({ socket }) => {
       monsterNumber,
     });
     sendResponsePacket(socket, PACKET_TYPE.SPAWN_MONSTER_RESPONSE, {
-      spawnMonsterResponse: spawnMonsterResponse,
+      spawnMonsterResponse,
     });
+
+    const opponentSocket = getOpponentSocket(socket);
+    if (opponentSocket) {
+      const S2CSpawnEnemyMonsterNotification = protoMessages.test.S2CSpawnEnemyMonsterNotification;
+      const spawnEnemyNotification = S2CSpawnEnemyMonsterNotification.create({
+        monsterId,
+        monsterNumber,
+      });
+      sendResponsePacket(opponentSocket, PACKET_TYPE.SPAWN_ENEMY_MONSTER_NOTIFICATION, {
+        spawnEnemyNotification,
+      });
+      console.log(`상대방에게 몬스터 생성 알림 전송: ID = ${monsterId}, 번호 = ${monsterNumber}`);
+    } else {
+      console.log('상대방 소켓을 찾을 수 없습니다.');
+    }
     console.log(`몬스터 생성 응답 전송: ID = ${monsterId}, 번호 = ${monsterNumber}`);
   } catch (error) {
     console.error('Error in spawnMonsterHandler:', error);
