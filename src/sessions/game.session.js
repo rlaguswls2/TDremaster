@@ -19,20 +19,20 @@ export class PlayerState {
     }));
   }
 
-  setUserGold(gold) {
-    this.gold = gold;
+  addGold(gold) {
+    this.userGold += gold;
   }
 
-  setBaseHp(baseHp) {
-    this.baseHp = baseHp;
+  getDamage(damage) {
+    this.baseHp -= damage;
   }
 
   setMonsterLevel(monsterLevel) {
     this.monsterLevel = monsterLevel;
   }
 
-  setScore(score) {
-    this.score = score;
+  addScore(score) {
+    this.score += score;
   }
 
   addTower(tower) {
@@ -52,6 +52,14 @@ export class PlayerState {
     }
   }
 }
+
+export const getPlayerState = (socket) => {
+  for (let i = 0; i < playerState.length; i++) {
+    if (playerState[i].id === socket) {
+      return playerState[i];
+    }
+  }
+};
 
 export const removePlayerState = (socket) => {
   for (let i = 0; i < playerState.length; i++) {
