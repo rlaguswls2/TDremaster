@@ -41,6 +41,12 @@ const handlers = {
     handler: monsterAttackBaseHandler,
     protoType: 'test.C2SMonsterAttackBaseRequest',
   },
+
+  [PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION]: {
+    handler: monsterAttackBaseHandler,
+    protoType: 'test.S2CUpdateBaseHPNotification',
+  },
+
   [PACKET_TYPE.MONSTER_DEATH_NOTIFICATION]: {
     handler: monsterDeathHandler,
     protoType: 'test.S2CEnemyMonsterDeathNotification',
