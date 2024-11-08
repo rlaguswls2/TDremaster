@@ -6,7 +6,6 @@ export const findUserById = async (id) => {
   const [rows] = await dbPool.query(USER_QUERIES.FIND_USER_BY_ID, [id]);
   if(rows.length===0)///null이 return 되면 중복이 없다는 뜻.
   {
-    console.log("중복 X");
     return null;
   }
   return toCamelCase(rows[0]);

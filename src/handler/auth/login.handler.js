@@ -1,11 +1,12 @@
 import { PACKET_TYPE, PACKET_TYPE_LENGTH } from '../../constants/header.js';
+import { findUserById } from '../../db/user/user.db.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { getGameSession } from '../../sessions/game.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { serializer } from '../../utils/serializer.js';
 import jwt from 'jsonwebtoken';//jwt토큰 발급을 위한 jwt 임포트
 
-const login = ({ socket, payload }) => {
+const login = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
 
@@ -22,10 +23,23 @@ const login = ({ socket, payload }) => {
     console.log(`in loginHandler.js data: ${id}, ${password}`);
     
 
+    //user가 존재하는지 확인
+    const success = true;// 로그인 성공 여부를 예시로 설정
+    const existuser=await findUserById(id);
+    
     // id와 password로 인증 로직 처리
-
+    
+    if(existuser===null)//id가 일치하는지 확인
+    {
+      console.log("Player is not exist!");
+      success=false;
+    }
+    if(password!==existuser.password)//비밀번호가 일치하는지 확인
+    {
+      console.log("pass word is dismatch!");
+      success=false;
+    }
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
-    const success = true; // 로그인 성공 여부를 예시로 설정
     const message = success ? 'Login successful.' : 'Login failed.';
     const jwtToken = jwt.sign({ id, password }, "SECRET_KEY", { expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     const failCode = success
