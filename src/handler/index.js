@@ -18,10 +18,7 @@ const handlers = {
     handler: spawnMonsterHandler,
     protoType: 'test.C2SSpawnMonsterRequest',
   },
-  [PACKET_TYPE.SPAWN_MONSTER_RESPONSE]: {
-    handler: undefined,
-    protoType: 'test.S2CSpawnMonsterResponse',
-  },
+
   [PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST]: {
     handler: monsterAttackBaseHandler,
     protoType: 'test.C2SMonsterAttackBaseRequest',
