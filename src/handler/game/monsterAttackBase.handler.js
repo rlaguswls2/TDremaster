@@ -1,26 +1,29 @@
 import { PACKET_TYPE } from '../../constants/header.js';
-import monsterAttackBaseHandler from './monsterAttackBase.handler.js';
+import { getProtoMessages } from '../../init/loadProto.js';
+import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 몬스터 공격 요청 처리 핸들러
-const handleMonsterAttackRequest = ({ socket, packet }) => {
+const monsterAttackBaseHandler = ({ payload }) => {
   try {
-    const { damage } = packet;
+    const damage = payload.damage; // 클라이언트에서 보내는 damage
 
-    // 몬스터 공격 핸들러 호출
-    monsterAttackBaseHandler({ damage });
+    if (typeof damage === 'undefined') {
+      console.error('damage가 없습니다:', payload);
+      return;
+    }
 
     // 클라이언트에 기지 HP 업데이트 알림 전송
-    socket.emit(PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, { baseHp: baseState.hp });
+    const protoMessages = getProtoMessages();
+
+    if (!protoMessages || !protoMessages.test) {
+      console.error('ProtoBuf 메시지가 올바르게 로드되지 않았습니다.');
+      return;
+    }
+
+    console.log(`기지 HP 업데이트 전송: 현재 HP = ${damage}`);
   } catch (error) {
-    console.error('몬스터 공격 요청 처리 중 오류 발생:', error);
+    console.error('몬스터 공격 처리 중 오류 발생:', error);
   }
 };
 
-// 소켓 연결 시 클라이언트로부터 오는 메시지 리스너
-const setupSocketListeners = ({ socket }) => {
-  socket.on(PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST, (packet) => {
-    handleMonsterAttackRequest(socket, packet);
-  });
-};
-
-export default setupSocketListeners;
+export default monsterAttackBaseHandler;
