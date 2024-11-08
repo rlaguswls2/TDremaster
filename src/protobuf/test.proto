@@ -54,7 +54,7 @@ message GameState {
   repeated Position monsterPath = 8;
   Position basePosition = 9;
 }
-
+//
 /* 
   패킷 명세
 */
