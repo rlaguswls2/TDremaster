@@ -3,7 +3,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 몬스터 공격 요청 처리 핸들러
-const monsterAttackBaseHandler = ({ payload }) => {
+const monsterAttackBaseHandler = ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
 
