@@ -1,5 +1,6 @@
 import { PACKET_NUMBER, SEQUENCE_SIZE, TOTAL_LENGTH, VERSION_START } from '../constants/header.js';
 import { getHandlerByPacketType } from '../handler/index.js';
+import { packetParser } from '../utils/parser/packetParser.js';
 
 export const onData = (socket) => async (data) => {
   socket.buffer = Buffer.concat([socket.buffer, data]);
