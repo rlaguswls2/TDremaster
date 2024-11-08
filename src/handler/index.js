@@ -1,5 +1,6 @@
 import { PACKET_TYPE } from '../constants/header.js';
 import login from './auth/login.handler.js';
+import register from './auth/register.handler.js';
 import matching from './game/match.handler.js';
 import monsterAttackBaseHandler from './game/monsterAttackBase.handler.js';
 import { monsterDeathHandler } from './game/monsterDeath.handler.js';
@@ -14,6 +15,10 @@ const handlers = {
     handler: matching,
     protoType: 'test.C2SMatchRequest',
   },
+  [PACKET_TYPE.REGISTER_REQUEST]: {
+    handler: register,
+    protoType: 'test.CS2RegisterRequest',
+  }
   [PACKET_TYPE.SPAWN_MONSTER_REQUEST]: {
     handler: spawnMonsterHandler,
     protoType: 'test.C2SSpawnMonsterRequest',
