@@ -1,11 +1,8 @@
 import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
+import { SECRET_KEY } from '../../constants/env.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
-import { serializer } from '../../utils/serializer.js';
-import jwt from 'jsonwebtoken';//jwt토큰 발급을 위한 jwt 임포트
-import bcrypt from 'bcrypt';
-import { SECRET_KEY } from '../../constants/env.js';
 
 const login = async ({ socket, payload }) => {
   try {
@@ -41,7 +38,7 @@ const login = async ({ socket, payload }) => {
     // }
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const message = success ? 'Login successful.' : 'Login failed.';
-    const jwtToken = jwt.sign({ id, password }, SECRET_KEY, { expiresIn: '1h' });//SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
+    const jwtToken = jwt.sign({ id, password }, SECRET_KEY, { expiresIn: '1h' }); //SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정
     const failCode = success
       ? protoMessages.test.GlobalFailCode.NONE
       : protoMessages.common.GlobalFailCode.AUTHENTICATION_FAILED;

@@ -4,7 +4,6 @@ import {
   PAYLOAD_LENGTH_SIZE,
   TOTAL_LENGTH,
   VERSION_START,
-  PACKET_NUMBER,
 } from '../constants/header.js';
 import { getHandlerByPacketType } from '../handler/index.js';
 
