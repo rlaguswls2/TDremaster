@@ -14,7 +14,6 @@ export const monsterDeathHandler = ({ socket, payload }) => {
     }
 
     const { monsterId } = monsterDeathNotification;
-    console.log(`Monster ID ${monsterId} died`);
 
     // 상대방에게 Notification 전송
     const opponentSocket = getOpponentSocket(socket);
