@@ -1,21 +1,33 @@
-import User from '../classes/models/user.class.js';
-import { updateUserLocation } from '../db/user/user.db.js';
-import { userSessions } from './sessions.js';
+// matchQueue.js - 매칭 큐 관리
+const matchQueue = [];
+const activePlayers = [];
 
-export const addUser = (user) => {
-  userSessions.push(user);
-  return user;
-};
+function addToMatchQueue(player) {
+  matchQueue.push(player);
+}
 
-export const removeUser = async (socket) => {
-  const index = userSessions.findIndex((user) => user.socket === socket);
-  if (index != -1) {
-    const user = userSessions[index];
-    await updateUserLocation(user.x, user.y, user.id);
-    return userSessions.splice(index, 1)[0];
+function getMatchPlayers() {
+  if (matchQueue.length >= 2) {
+    const [playerA, playerB] = matchQueue.splice(0, 2); // 소켓 전달
+    activePlayers.push({ playerA, playerB });
+    return { playerA, playerB };
   }
-};
+  return null;
+}
 
-export const getAllUser = () => {
-  return userSessions;
-};
+function getOpponentSocket(playerSocket) {
+  for (let i = 0; i < activePlayers.length; i++) {
+    if (activePlayers[i].playerA === playerSocket) return activePlayers[i].playerB;
+    if (activePlayers[i].playerB === playerSocket) return activePlayers[i].playerA;
+  }
+}
+
+function clearMatch(playerSocket) {
+  for (let i = 0; i < activePlayers.length; i++) {
+    if (activePlayers[i].playerA === playerSocket || activePlayers[i].playerB === playerSocket) {
+      activePlayers.splice(i, 1);
+    }
+  }
+}
+
+export { addToMatchQueue, clearMatch, getMatchPlayers, getOpponentSocket };

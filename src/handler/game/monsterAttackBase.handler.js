@@ -1,6 +1,6 @@
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import { getOpponentSocket } from '../../utils/match/matchQueue.js';
+import { getOpponentSocket } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 몬스터 공격 요청 처리 핸들러

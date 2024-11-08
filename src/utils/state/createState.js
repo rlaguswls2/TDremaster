@@ -14,7 +14,7 @@ export const createInitialGameState = () => {
   return initialGameState;
 };
 
-export const createGameState = () => {
+export const createGameState = (towerIds) => {
   const protoMessages = getProtoMessages();
   const GameState = protoMessages.test.GameState;
   const TowerData = protoMessages.test.TowerData;
@@ -27,9 +27,9 @@ export const createGameState = () => {
     base: BaseData.create({ hp: 100, maxHp: 100 }),
     highScore: 0,
     towers: [
-      TowerData.create({ towerId: 1, x: 200, y: 350 }),
-      TowerData.create({ towerId: 2, x: 400, y: 400 }),
-      TowerData.create({ towerId: 3, x: 800, y: 350 }),
+      TowerData.create({ towerId: towerIds[0], x: 200, y: 350 }),
+      TowerData.create({ towerId: towerIds[1], x: 400, y: 400 }),
+      TowerData.create({ towerId: towerIds[2], x: 800, y: 350 }),
     ],
     monsters: [MonsterData.create({ monsterId: 1, monsterNumber: 1, level: 1 })],
     monsterLevel: 1,

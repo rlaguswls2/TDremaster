@@ -2,11 +2,11 @@ import { PACKET_TYPE } from '../constants/header.js';
 import login from './auth/login.handler.js';
 import register from './auth/register.handler.js';
 import matching from './game/match.handler.js';
-import towerAttack from './game/towerAttack.handler.js';
-import towerPurchase from './game/towerPurchase.handler.js';
-import spawnMonsterHandler from './game/spawnMonster.handler.js';
 import monsterAttackBaseHandler from './game/monsterAttackBase.handler.js';
 import { monsterDeathHandler } from './game/monsterDeath.handler.js';
+import spawnMonsterHandler from './game/spawnMonster.handler.js';
+import towerAttack from './game/towerAttack.handler.js';
+import towerPurchase from './game/towerPurchase.handler.js';
 
 const handlers = {
   [PACKET_TYPE.LOGIN_REQUEST]: {
@@ -25,10 +25,6 @@ const handlers = {
     handler: towerAttack,
     protoType: 'test.C2STowerAttackRequest',
   },
-  [PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION]: {
-    handler: towerAttack,
-    protoType: 'test.S2CEnemyTowerAttackNotification',
-  },
   [PACKET_TYPE.REGISTER_REQUEST]: {
     handler: register,
     protoType: 'test.CS2RegisterRequest',
@@ -41,12 +37,6 @@ const handlers = {
     handler: monsterAttackBaseHandler,
     protoType: 'test.C2SMonsterAttackBaseRequest',
   },
-
-  [PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION]: {
-    handler: monsterAttackBaseHandler,
-    protoType: 'test.S2CUpdateBaseHPNotification',
-  },
-
   [PACKET_TYPE.MONSTER_DEATH_NOTIFICATION]: {
     handler: monsterDeathHandler,
     protoType: 'test.S2CEnemyMonsterDeathNotification',
