@@ -1,11 +1,8 @@
 import { getProtoMessages } from '../../init/loadProto.js';
-// import { createTowerId } from "./towerPurchase.handler.js";
-// import { generateUniqueMonsterId } from "./spawnMonster.handler.js"
-import { PACKET_TYPE } from '../../constants/header.js';
 import { getOpponentSocket } from '../../sessions/user.session.js';
-import sendResponsePacket from '../../utils/response/createResponse.js';
+import { sendEnemyTowerAttackNotification } from './notification/sendNotification.js';
 
-const towerAttack = ({ socket, payload }) => {
+export const towerAttack = ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
 
@@ -18,19 +15,14 @@ const towerAttack = ({ socket, payload }) => {
       throw new Error('Invalid payload type in GamePacket for towerAttack request.');
     }
 
-    const S2CEnemyTowerAttackNotification = protoMessages.test.S2CEnemyTowerAttackNotification;
-    const enemyTowerAttackNotification = S2CEnemyTowerAttackNotification.create({
-      towerId: towerId,
-      monsterId: monsterId,
-    });
-
+    // 상대방에게 타워 공격 알림 전송
     const opponentSocket = getOpponentSocket(socket);
-    sendResponsePacket(opponentSocket, PACKET_TYPE.ENEMY_TOWER_ATTACK_NOTIFICATION, {
-      enemyTowerAttackNotification,
-    });
+    if (opponentSocket) {
+      sendEnemyTowerAttackNotification(opponentSocket, towerId, monsterId);
+    } else {
+      console.log('Not found opponent socket in ENEMY_TOWER_ATTACK_NOTIFICATION');
+    }
   } catch (e) {
     console.error(e);
   }
 };
-
-export default towerAttack;

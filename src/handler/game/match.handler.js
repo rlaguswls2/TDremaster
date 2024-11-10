@@ -1,14 +1,12 @@
-import { INITIAL_TOWER_COUNT } from '../../constants/gameState.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { PlayerState } from '../../sessions/game.session.js';
 import { playerState } from '../../sessions/sessions.js';
 import { addToMatchQueue, getMatchPlayers } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
-import { createGameState, createInitialGameState } from '../../utils/state/createState.js';
-import { generateTowerIds } from './towerPurchase.handler.js';
+import { createGameStateData, createInitialGameState } from '../../utils/state/createState.js';
 
-const matching = ({ socket, payload }) => {
+export const matching = ({ socket }) => {
   try {
     const protoMessages = getProtoMessages();
     addToMatchQueue(socket);
@@ -17,17 +15,22 @@ const matching = ({ socket, payload }) => {
     if (players) {
       const { playerA, playerB } = players;
 
-      const initialGameState = createInitialGameState();
+      // 여기서 db로부터 highScore 가져와서 0대신 할당 0은 임시값
+      // 아니면 로그인 했을 때 가져온 값을 할당
+      const playerAHighScore = 0;
+      const playerBHighScore = 0;
+      const playerStateA = new PlayerState(playerA, playerAHighScore);
+      const playerStateB = new PlayerState(playerB, playerBHighScore);
 
-      // 따로 init() 함수 만들 필요?
-      const A_towers = generateTowerIds(INITIAL_TOWER_COUNT);
-      const B_towers = generateTowerIds(INITIAL_TOWER_COUNT);
-      const A_GameState = createGameState(A_towers);
-      const B_GameState = createGameState(B_towers);
-      const playerStateA = new PlayerState(playerA, A_GameState);
-      const playerStateB = new PlayerState(playerB, B_GameState);
+      // 게임 내에 추적할 각 유저 스테이트에 추가
       playerState.push(playerStateA);
       playerState.push(playerStateB);
+
+      const initialGameState = createInitialGameState();
+
+      // 생성한 PlayerState 객체 기반으로 data 생성
+      const A_GameState = createGameStateData(playerA);
+      const B_GameState = createGameStateData(playerB);
 
       const S2CMatchStartNotification = protoMessages.test.S2CMatchStartNotification;
       const A_MatchStartNotification = S2CMatchStartNotification.create({
@@ -57,5 +60,3 @@ const matching = ({ socket, payload }) => {
     console.error('Error in matchRequest:', error);
   }
 };
-
-export default matching;

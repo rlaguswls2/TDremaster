@@ -5,10 +5,12 @@ import { clearMatch, getOpponentSocket } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
 // 게임 오버
-const S2CGameOverNotification = ({ socket }) => {
+export const sendGameOverNotification = ({ socket }) => {
   try {
     const opponentSocket = getOpponentSocket(socket);
     if (!opponentSocket) return;
+
+    // db 각 플레이어에 highScore 저장
 
     removePlayerState(socket);
     removePlayerState(opponentSocket);
@@ -42,5 +44,3 @@ const S2CGameOverNotification = ({ socket }) => {
     console.error('게임 오버 처리 중 오류 발생:', error);
   }
 };
-
-export default S2CGameOverNotification;

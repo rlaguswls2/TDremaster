@@ -4,7 +4,7 @@ import { createUser, findUserById } from '../../db/user/user.db.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
-const register = async ({ socket, payload }) => {
+export const register = async ({ socket, payload }) => {
   const protoMessages = getProtoMessages();
   let success = true; //성공을 판별하는 변수
   let errorMessage = ''; //에러메시지를 담을 공간
@@ -68,5 +68,3 @@ const register = async ({ socket, payload }) => {
     });
   }
 };
-
-export default register;
