@@ -1,3 +1,6 @@
-export const gameSessions = [];
+// game.session
+export const playerState = [];
 
-export const userSessions = [];
+// user.session
+export const matchQueue = [];
+export const activePlayers = [];

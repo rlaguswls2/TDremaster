@@ -1,6 +1,8 @@
 import { INITIAL_TOWER_COUNT } from '../../constants/gameState.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
+import { PlayerState } from '../../sessions/game.session.js';
+import { playerState } from '../../sessions/sessions.js';
 import { addToMatchQueue, getMatchPlayers } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 import { createGameState, createInitialGameState } from '../../utils/state/createState.js';
@@ -22,6 +24,10 @@ const matching = ({ socket, payload }) => {
       const B_towers = generateTowerIds(INITIAL_TOWER_COUNT);
       const A_GameState = createGameState(A_towers);
       const B_GameState = createGameState(B_towers);
+      const playerStateA = new PlayerState(playerA, A_GameState);
+      const playerStateB = new PlayerState(playerB, B_GameState);
+      playerState.push(playerStateA);
+      playerState.push(playerStateB);
 
       const S2CMatchStartNotification = protoMessages.test.S2CMatchStartNotification;
       const A_MatchStartNotification = S2CMatchStartNotification.create({
