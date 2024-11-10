@@ -1,22 +1,29 @@
+import { GAME_STATE } from '../constants/gameState.js';
+import {
+  generateMonsterData,
+  generateMonsterNumber,
+} from '../handler/game/spawnMonster.handler.js';
+import { generateTowers } from '../handler/game/towerPurchase.handler.js';
 import { playerState } from './sessions.js';
 
 export class PlayerState {
-  constructor(id, gameState) {
+  constructor(id, highScore) {
     this.id = id;
-    this.userGold = gameState.gold;
-    this.baseHp = gameState.base.hp;
-    this.monsterLevel = gameState.monsterLevel;
+    this.userGold = GAME_STATE.INITIAL_GOLD;
+    this.baseHp = GAME_STATE.INITIAL_BASE_HP;
+    this.maxHp = GAME_STATE.INITIAL_BASE_HP;
+    this.monsterLevel = GAME_STATE.MONSTER_LEVEL;
     this.score = 0;
-    this.towers = gameState.towers.map((tower) => ({
-      towerId: tower.towerId,
-      x: tower.x,
-      y: tower.y,
-    }));
-    this.monsters = gameState.monsters.map((monster) => ({
-      monsterId: monster.monsterId,
-      monsterNumber: monster.monsterNumber,
-      level: monster.level,
-    }));
+    this.highScore = highScore;
+    this.towers = generateTowers(
+      GAME_STATE.INITIAL_TOWER_COUNT,
+      GAME_STATE.INITIAL_TOWER_POSITIONS,
+    );
+    this.monsterData = generateMonsterData(
+      generateMonsterNumber(),
+      GAME_STATE.INITIAL_MONSTER_LEVEL,
+    );
+    this.monsters = [];
   }
 
   addGold(gold) {

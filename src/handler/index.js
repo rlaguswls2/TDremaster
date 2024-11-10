@@ -1,13 +1,13 @@
 import { PACKET_TYPE } from '../constants/header.js';
-import login from './auth/login.handler.js';
-import register from './auth/register.handler.js';
-import gameEndHandler from './game/gameEnd.handler.js';
-import matching from './game/match.handler.js';
-import monsterAttackBaseHandler from './game/monsterAttackBase.handler.js';
+import { login } from './auth/login.handler.js';
+import { register } from './auth/register.handler.js';
+import { gameEndHandler } from './game/gameEnd.handler.js';
+import { matching } from './game/match.handler.js';
+import { monsterAttackBaseHandler } from './game/monsterAttackBase.handler.js';
 import { monsterDeathHandler } from './game/monsterDeath.handler.js';
-import spawnMonsterHandler from './game/spawnMonster.handler.js';
-import towerAttack from './game/towerAttack.handler.js';
-import towerPurchase from './game/towerPurchase.handler.js';
+import { spawnMonsterHandler } from './game/spawnMonster.handler.js';
+import { towerAttack } from './game/towerAttack.handler.js';
+import { towerPurchase } from './game/towerPurchase.handler.js';
 
 const handlers = {
   [PACKET_TYPE.LOGIN_REQUEST]: {

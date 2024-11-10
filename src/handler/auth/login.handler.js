@@ -1,10 +1,9 @@
 import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import { PACKET_TYPE } from '../../constants/header.js';
-import { updateUserLogin } from '../../db/user/user.db.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
 
-const login = async ({ socket, payload }) => {
+export const login = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
 
@@ -56,5 +55,3 @@ const login = async ({ socket, payload }) => {
     console.error('Error handling login request:', error);
   }
 };
-
-export default login;
