@@ -1,11 +1,10 @@
-import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { getPlayerState } from '../../sessions/game.session.js';
 import { getOpponentSocket } from '../../sessions/user.session.js';
-import sendResponsePacket from '../../utils/response/createResponse.js';
 import {
   sendGameOverNotification,
   sendOpponentBaseHpUpdateNotification,
+  sendPlayerBaseHpUpdateNotification,
 } from './notification/sendNotification.js';
 
 // 몬스터 공격 요청 처리 핸들러
@@ -29,18 +28,11 @@ export const monsterAttackBaseHandler = ({ socket, payload }) => {
       return;
     }
 
-    // send response
     const playerState = getPlayerState(socket);
     playerState.getDamage(damage);
-    const S2CUpdateBaseHPNotification = protoMessages.test.S2CUpdateBaseHPNotification;
-    const updateBaseHpNotification = S2CUpdateBaseHPNotification.create({
-      isOpponent: false,
-      baseHp: playerState.baseHp,
-    });
 
-    sendResponsePacket(socket, PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, {
-      updateBaseHpNotification,
-    });
+    // send notification
+    sendPlayerBaseHpUpdateNotification(socket, playerState.baseHp);
 
     // send notification
     const opponentSocket = getOpponentSocket(socket);
