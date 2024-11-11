@@ -8,6 +8,7 @@ export class UserState {
     this.highScore = 0;
   }
 
+  // DB에 값 반영
   async setHighScore() {
     this.highScore = await findHighScoreById(this.id);
   }
