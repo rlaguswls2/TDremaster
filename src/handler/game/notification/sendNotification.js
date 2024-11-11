@@ -1,11 +1,7 @@
 import { PACKET_TYPE } from '../../../constants/header.js';
 import { getProtoMessages } from '../../../init/loadProto.js';
 import { removePlayerState } from '../../../sessions/game.session.js';
-import {
-  clearMatch,
-  getOpponentSocket,
-  removeHighScoreState,
-} from '../../../sessions/user.session.js';
+import { clearMatch, getOpponentSocket } from '../../../sessions/user.session.js';
 import sendResponsePacket from '../../../utils/response/createResponse.js';
 
 export const sendEnemyTowerNotification = (opponentSocket, towerData) => {
@@ -98,9 +94,6 @@ export const sendGameOverNotification = ({ socket }) => {
     const opponentSocket = getOpponentSocket(socket);
     if (!opponentSocket) return;
 
-    // db 각 플레이어에 highScore 저장
-    removeHighScoreState(socket);
-    removeHighScoreState(opponentSocket);
     removePlayerState(socket);
     removePlayerState(opponentSocket);
     clearMatch(socket);
