@@ -14,3 +14,5 @@ export const GAME_STATE = {
     { x: 1200, y: 350 },
   ],
 };
+
+export const STAGE_UP_SCORE = 100;
