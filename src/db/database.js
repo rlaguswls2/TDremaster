@@ -19,7 +19,6 @@ const createPool = () => {
       ${sql} ${params ? `${JSON.stringify(params)}` : ``}`);
     return originalQuery.call(pool, sql, params);
   };
-
   return pool;
 };
 

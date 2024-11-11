@@ -2,6 +2,10 @@ import { PACKET_TYPE } from '../../../constants/header.js';
 import { getProtoMessages } from '../../../init/loadProto.js';
 import { removePlayerState } from '../../../sessions/game.session.js';
 import { clearMatch, getOpponentSocket } from '../../../sessions/user.session.js';
+import {
+  clearMatch,
+  getOpponentSocket,
+} from '../../../sessions/user.session.js';
 import sendResponsePacket from '../../../utils/response/createResponse.js';
 
 export const sendEnemyTowerNotification = (opponentSocket, towerData) => {
@@ -89,7 +93,7 @@ export const sendOpponentBaseHpUpdateNotification = (opponentSocket, baseHp) => 
 };
 
 // 게임 오버
-export const sendGameOverNotification = ({ socket }) => {
+export const sendGameOverNotification = async ({ socket }) => {
   try {
     const opponentSocket = getOpponentSocket(socket);
     if (!opponentSocket) return;
