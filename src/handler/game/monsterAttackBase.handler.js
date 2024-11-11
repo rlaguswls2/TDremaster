@@ -3,6 +3,7 @@ import { getProtoMessages } from '../../init/loadProto.js';
 import { getPlayerState } from '../../sessions/game.session.js';
 import { getOpponentSocket } from '../../sessions/user.session.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
+import { sendGameOverNotification } from './gameOver.handler.js';
 import { sendOpponentBaseHpUpdateNotification } from './notification/sendNotification.js';
 
 // 몬스터 공격 요청 처리 핸들러
@@ -34,6 +35,10 @@ export const monsterAttackBaseHandler = ({ socket, payload }) => {
       isOpponent: false,
       baseHp: playerState.baseHp,
     });
+
+    if (playerState.baseHp <= 0) {
+      sendGameOverNotification({ socket });
+    }
 
     sendResponsePacket(socket, PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, {
       updateBaseHpNotification,
