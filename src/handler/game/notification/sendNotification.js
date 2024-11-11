@@ -138,7 +138,7 @@ export const sendPlayerBaseHpUpdateNotification = (socket, baseHp) => {
   console.log(`Base HP update notification sent to player: baseHp = ${baseHp}`);
 };
 
-export const sendGameOverNotification = async ({ socket }) => {
+export const sendGameOverNotification = async ({ socket, opponentSocket }) => {
   try {
     const protoMessages = getProtoMessages();
     const S2CGameOverNotification = protoMessages.test.S2CGameOverNotification;

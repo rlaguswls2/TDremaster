@@ -22,7 +22,7 @@ export const gameOverHandler = async ({ socket }) => {
     removePlayerState(opponentSocket);
     clearMatch(socket);
 
-    sendGameOverNotification(socket);
+    sendGameOverNotification(socket, opponentSocket);
   } catch (e) {
     console.error(e);
   }
