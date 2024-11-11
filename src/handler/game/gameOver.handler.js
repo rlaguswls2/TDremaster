@@ -1,4 +1,5 @@
 import { PACKET_TYPE } from '../../constants/header.js';
+import { updateUserHighScore } from '../../db/user/user.db.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import { removePlayerState } from '../../sessions/game.session.js';
 import { clearMatch, getOpponentSocket } from '../../sessions/user.session.js';
@@ -11,7 +12,8 @@ export const sendGameOverNotification = ({ socket }) => {
     if (!opponentSocket) return;
 
     // db 각 플레이어에 highScore 저장
-
+    updateUserHighScore();
+    updateUserHighScore();
     removePlayerState(socket);
     removePlayerState(opponentSocket);
     clearMatch(socket);

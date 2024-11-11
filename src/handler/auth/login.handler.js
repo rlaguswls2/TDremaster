@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
-
+import { findUserById, updateUserLogin,findHighScore } from '../../db/user/user.db.js';
+import bcrypt from 'bcrypt';
 export const login = async ({ socket, payload }) => {
   try {
     const protoMessages = getProtoMessages();
@@ -20,12 +21,13 @@ export const login = async ({ socket, payload }) => {
     console.log(`in loginHandler.js data: ${id}, ${password}`);
 
     //user가 존재하는지 확인
-    const success = true; // 로그인 성공 여부를 예시로 설정
+    let success = true; // 로그인 성공 여부를 예시로 설정
 
     // id와 password로 인증 로직 처리
 
     // ★★ 나중에 풀어야함=========================================================================================================================
-    //const existuser = await findUserById(id);
+    // const existuser = await findUserById(id);
+  
     // if(existuser===null)//id가 일치하는지 확인
     // {
     //   console.log("Player is not exist!");
@@ -37,6 +39,10 @@ export const login = async ({ socket, payload }) => {
     //   success=false;
     // }
 
+    
+    //highscore불러오는 부분
+    // const tmp=await findHighScore(id)
+    // console.log("User's high score:",tmp);
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const message = success ? 'Login successful.' : 'Login failed.';
     const jwtToken = jwt.sign({ id, password }, 'SECRET_KEY', { expiresIn: '1h' }); //SECRET_KEY부분임시로 채움, 만료시간 1시간으로 설정

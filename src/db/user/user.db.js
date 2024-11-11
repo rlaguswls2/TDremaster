@@ -4,7 +4,7 @@ import { USER_QUERIES } from './user.queries.js';
 
 export const findUserById = async (id) => {
   const [rows] = await dbPool.query(USER_QUERIES.FIND_USER_BY_ID, [id]);
-  if(rows.length===0)///null이 return 되면 중복이 없다는 뜻.
+  if(rows.length===0)//id가 존재하지않으면 null리턴
   {
     return null;
   }
@@ -23,4 +23,17 @@ export const updateUserLogin = async (id) => {
 
 export const updateUserLocation = async (x, y, deviceId) => {
   await dbPool.query(USER_QUERIES.UPDATE_USER_LOCATION, [x, y, deviceId]);
+};
+//유저의 하이스코어를 갱신하는 코드
+export const updateUserHighScore =async(highScore,id)=>{
+  await dbPool.query(USER_QUERIES.UPDATE_HIGHEST_SCORE, [highScore, id]);
+};
+//highScore불러오는 함수 id를 비교해서 db에 저장된 highest_score을 불러온다.
+export const findHighScore = async (id) => {
+  const [rows] = await dbPool.query(USER_QUERIES.FIND_USER_BY_ID, [id]);
+  if(rows.length===0)//id가 여러개면 null리턴
+  {
+    return null;
+  }
+  return rows[0].highest_score;
 };
