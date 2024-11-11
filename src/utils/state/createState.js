@@ -40,10 +40,12 @@ export const createGameStateData = (socket) => {
     monsterLevel: playerState.monsterLevel,
     score: playerState.score,
     monsterPath: [
-      Position.create({ x: 200, y: 300 }),
+      Position.create({ x: 100, y: 300 }),
       Position.create({ x: 400, y: 350 }),
-      Position.create({ x: 800, y: 400 }),
-      Position.create({ x: 1400, y: 350 }),
+      Position.create({ x: 700, y: 250 }),
+      Position.create({ x: 1000, y: 350 }),
+      Position.create({ x: 1200, y: 250 }),
+      Position.create({ x: 1400, y: 300 }),
     ],
     basePosition: Position.create({ x: 1400, y: 350 }),
   });

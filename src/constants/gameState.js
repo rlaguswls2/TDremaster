@@ -9,8 +9,8 @@ export const GAME_STATE = {
   MONSTER_LEVEL: 1,
   INITIAL_MONSTER_LEVEL: 1,
   INITIAL_TOWER_POSITIONS: [
-    { x: 200, y: 350 },
+    { x: 100, y: 250 },
     { x: 400, y: 400 },
-    { x: 800, y: 350 },
+    { x: 1200, y: 350 },
   ],
 };
