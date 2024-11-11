@@ -15,8 +15,8 @@ export const matching = ({ socket }) => {
     if (players) {
       const { playerA, playerB } = players;
 
-      const playerStateA = new PlayerState(playerA, playerAHighScore);
-      const playerStateB = new PlayerState(playerB, playerBHighScore);
+      const playerStateA = new PlayerState(playerA, 0);
+      const playerStateB = new PlayerState(playerB, 0);
 
       // 게임 내에 추적할 각 유저 스테이트에 추가
       playerState.push(playerStateA);
