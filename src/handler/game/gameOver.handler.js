@@ -1,9 +1,9 @@
 import { getPlayerState, removePlayerState } from '../../sessions/game.session.js';
 import { getHighScore, getOpponentSocket } from '../../sessions/user.session.js';
 import { updateScores } from '../../utils/db/highScoreUpdate.js';
-import { sendGameOverNotification } from './gameOver.js';
+import { sendGameOverNotification } from './notification/sendNotification.js';
 
-export const gameOverHandler = async ({ socket, payload }) => {
+export const gameOverHandler = async ({ socket }) => {
   try {
     const opponentSocket = getOpponentSocket(socket);
     if (!opponentSocket) return;
