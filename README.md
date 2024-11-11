@@ -129,10 +129,12 @@
  ┣ 📜package-lock.json<br>
  ┣ 📜package.json<br>
  ┗ 📜README.md<br>
-----<br>
+ 
+----
 ### 팀 노션<br>
 [8bit Gaming](https://www.notion.so/teamsparta/8bit-Gaming-f3722101964b4b0d83d9b22ffe19d6ba#1232dc3ef514817ca723e18284e8c0ea)<br>
-----<br>
+----
+
 ### 프로젝트 제작 인원<br>
 - [최성원](https://github.com/DudeKYH "Github") [김선우](https://github.com/Rien3844 "Github") [김현진](https://github.com/rlaguswls2 "Github")<br>
  [이진욱](https://github.com/adfio1234 "Github") [이의현](https://github.com/UIHyeonLEE "Github") [이상현](https://github.com/LeeSanghyun1212 "Github")<br>
