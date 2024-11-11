@@ -3,7 +3,7 @@ import { activePlayers, playerState } from '../sessions/sessions.js';
 import { removeHighScoreState } from '../sessions/user.session.js';
 
 export const onEnd = (socket) => async () => {
-  gameOverHandler;
+  gameOverHandler();
   removeHighScoreState(socket);
   console.log('클라이언트 연결이 종료되었습니다.');
   console.log('삭제 전 남은 플레이어 수: ', playerState.length);
