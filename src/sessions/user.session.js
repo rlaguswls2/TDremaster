@@ -15,9 +15,8 @@ export class UserState {
 }
 
 export const getHighScore = (socket) => {
-  // 최고점수 업데이트할때 사용?
   for (let i = 0; i < userHighScore.length; i++) {
-    if (userHighScore[i].id === socket) {
+    if (userHighScore[i].socket === socket) {
       return userHighScore[i];
     }
   }
@@ -25,7 +24,7 @@ export const getHighScore = (socket) => {
 
 export const removeHighScoreState = (socket) => {
   for (let i = 0; i < userHighScore.length; i++) {
-    if (userHighScore[i].id === socket) {
+    if (userHighScore[i].socket === socket) {
       return userHighScore.splice(i, 1);
     }
   }
