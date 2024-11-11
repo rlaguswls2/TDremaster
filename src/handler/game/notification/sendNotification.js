@@ -98,6 +98,11 @@ export const sendGameOverNotification = async ({ socket }) => {
     const playerStateB = getPlayerState(opponentSocket); // 애가 이긴 놈(항상 이김 상대가 나가면)
     const userB = getHighScore(opponentSocket);
     userB.highScore = Math.max(userB.highScore, playerStateB.score);
+
+    const playerStateA = getPlayerState(socket); // 진 놈
+    const userA = getHighScore(socket);
+    userA.highScore = Math.max(userA.highScore, playerStateA.score);
+
     await updateScores(socket, opponentSocket);
 
     removePlayerState(socket);
