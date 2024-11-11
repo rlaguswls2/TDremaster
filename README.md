@@ -55,9 +55,10 @@
 1. 타워 구매<br>타워 구매 버튼을 누르면 버튼을 누른 플레이어의 보유 골드량을 감소시키고 타워가 배치됩니다.
 
 <br>
-1. S2CMatchStartNotification(선택) - 구현 완료
-1. C2SGameEndRequest(선택) - 구현 완료
-1. S2CStateSyncNotification(선택) - 구현 완료
+1. S2CMatchStartNotification(선택) - 구현 완료<br>
+1. C2SGameEndRequest(선택) - 구현 완료<br>
+1. S2CStateSyncNotification(선택) - 구현 완료<br>
+
 ----
 ### 폴더 구조<br>
  📦TDremaster<br>
