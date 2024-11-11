@@ -4,17 +4,17 @@ import { USER_QUERIES } from './user.queries.js';
 
 export const findUserById = async (id) => {
   const [rows] = await dbPool.query(USER_QUERIES.FIND_USER_BY_ID, [id]);
-  if(rows.length===0)///null이 return 되면 중복이 없다는 뜻.
-  {
+  if (rows.length === 0) {
+    ///null이 return 되면 중복이 없다는 뜻.
     return null;
   }
   return toCamelCase(rows[0]);
 };
 
-export const createUser = async (email,id,password) => {
-  console.log("createUser:",email,id,password);
-  await dbPool.query(USER_QUERIES.CREATE_USER, [email,id,password]);
-  return { email,id,password };
+export const createUser = async (email, id, password) => {
+  console.log('createUser:', email, id, password);
+  await dbPool.query(USER_QUERIES.CREATE_USER, [email, id, password]);
+  return { email, id, password };
 };
 
 export const updateUserLogin = async (id) => {
@@ -23,4 +23,9 @@ export const updateUserLogin = async (id) => {
 
 export const updateUserLocation = async (x, y, deviceId) => {
   await dbPool.query(USER_QUERIES.UPDATE_USER_LOCATION, [x, y, deviceId]);
+};
+
+export const findHighScoreById = async (id) => {
+  const [rows] = await dbPool.query(USER_QUERIES.FIND_HIGHSCORE_BY_ID, [id]);
+  return rows[0].highest_score;
 };

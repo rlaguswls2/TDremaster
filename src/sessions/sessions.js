@@ -4,3 +4,4 @@ export const playerState = [];
 // user.session
 export const matchQueue = [];
 export const activePlayers = [];
+export const userHighScore = [];

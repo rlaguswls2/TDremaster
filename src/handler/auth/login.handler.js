@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
+import { UserState } from '../../sessions/user.session.js';
+import { userHighScore } from '../../sessions/sessions.js';
 
 export const login = async ({ socket, payload }) => {
   try {
@@ -15,9 +17,14 @@ export const login = async ({ socket, payload }) => {
     if (!loginRequest) {
       throw new Error('Invalid payload type in GamePacket for login request.');
     }
-
     const { id, password } = loginRequest; //id와 password를 받아온다.
+
     console.log(`in loginHandler.js data: ${id}, ${password}`);
+
+    // newuser 로그인 시 id 와 highscore를 전달
+    const newuser = new UserState(socket, id);
+    await newuser.setHighScore();
+    userHighScore.push(newuser);
 
     //user가 존재하는지 확인
     const success = true; // 로그인 성공 여부를 예시로 설정
@@ -33,7 +40,7 @@ export const login = async ({ socket, payload }) => {
     // }
     // if(!(await bcrypt.compare(password, existuser.password)))//비밀번호가 일치하는지 확인
     // {
-    //   console.log("pass word is dismatch!");
+    //   console.log("password is dismatch!");
     //   success=false;
     // }
 
