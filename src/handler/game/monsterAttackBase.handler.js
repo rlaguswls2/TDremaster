@@ -1,8 +1,8 @@
 import { getProtoMessages } from '../../init/loadProto.js';
 import { getPlayerState } from '../../sessions/game.session.js';
 import { getOpponentSocket } from '../../sessions/user.session.js';
+import { gameOverHandler } from './gameOver.handler.js';
 import {
-  sendGameOverNotification,
   sendOpponentBaseHpUpdateNotification,
   sendPlayerBaseHpUpdateNotification,
 } from './notification/sendNotification.js';
@@ -43,7 +43,7 @@ export const monsterAttackBaseHandler = ({ socket, payload }) => {
     }
 
     if (playerState.baseHp <= 0) {
-      sendGameOverNotification({ socket });
+      gameOverHandler({ socket });
     }
   } catch (error) {
     console.error('몬스터 공격 처리 중 오류 발생:', error);

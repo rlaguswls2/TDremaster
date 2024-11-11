@@ -1,7 +1,9 @@
+import { PACKET_TYPE } from '../../constants/header.js';
+import { getProtoMessages } from '../../init/loadProto.js';
 import { getPlayerState, removePlayerState } from '../../sessions/game.session.js';
 import { clearMatch, getHighScore, getOpponentSocket } from '../../sessions/user.session.js';
 import { updateScores } from '../../utils/db/highScoreUpdate.js';
-import { sendGameOverNotification } from './notification/sendNotification.js';
+import sendResponsePacket from '../../utils/response/createResponse.js';
 
 export const gameOverHandler = async ({ socket }) => {
   try {
@@ -22,7 +24,24 @@ export const gameOverHandler = async ({ socket }) => {
     removePlayerState(opponentSocket);
     clearMatch(socket);
 
-    sendGameOverNotification(socket, opponentSocket);
+    const protoMessages = getProtoMessages();
+    const S2CGameOverNotification = protoMessages.test.S2CGameOverNotification;
+    const myGameOverNotification = S2CGameOverNotification.create({
+      isWin: false,
+    });
+    const opponentGameOverNotification = S2CGameOverNotification.create({
+      isWin: true,
+    });
+
+    sendResponsePacket(socket, PACKET_TYPE.GAME_OVER_NOTIFICATION, {
+      gameOverNotification: myGameOverNotification,
+    });
+
+    sendResponsePacket(opponentSocket, PACKET_TYPE.GAME_OVER_NOTIFICATION, {
+      gameOverNotification: opponentGameOverNotification,
+    });
+
+    console.log(`게임 오버 데이터 전송`);
   } catch (e) {
     console.error(e);
   }

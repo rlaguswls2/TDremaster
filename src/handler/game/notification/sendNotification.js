@@ -137,28 +137,3 @@ export const sendPlayerBaseHpUpdateNotification = (socket, baseHp) => {
 
   console.log(`Base HP update notification sent to player: baseHp = ${baseHp}`);
 };
-
-export const sendGameOverNotification = async ({ socket, opponentSocket }) => {
-  try {
-    const protoMessages = getProtoMessages();
-    const S2CGameOverNotification = protoMessages.test.S2CGameOverNotification;
-    const myGameOverNotification = S2CGameOverNotification.create({
-      isWin: false,
-    });
-    const opponentGameOverNotification = S2CGameOverNotification.create({
-      isWin: true,
-    });
-
-    sendResponsePacket(socket, PACKET_TYPE.GAME_OVER_NOTIFICATION, {
-      gameOverNotification: myGameOverNotification,
-    });
-
-    sendResponsePacket(opponentSocket, PACKET_TYPE.GAME_OVER_NOTIFICATION, {
-      gameOverNotification: opponentGameOverNotification,
-    });
-
-    console.log(`게임 오버 데이터 전송`);
-  } catch (error) {
-    console.error('게임 오버 처리 중 오류 발생:', error);
-  }
-};
