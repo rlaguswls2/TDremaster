@@ -15,10 +15,6 @@ export const matching = ({ socket }) => {
     if (players) {
       const { playerA, playerB } = players;
 
-      // 여기서 db로부터 highScore 가져와서 0대신 할당 0은 임시값
-      // 아니면 로그인 했을 때 가져온 값을 할당
-      const playerAHighScore = 0;
-      const playerBHighScore = 0;
       const playerStateA = new PlayerState(playerA, playerAHighScore);
       const playerStateB = new PlayerState(playerB, playerBHighScore);
 

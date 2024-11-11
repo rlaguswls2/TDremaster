@@ -1,4 +1,4 @@
-import { sendGameOverNotification } from '../handler/game/gameOver.handler.js';
+import { sendGameOverNotification } from '../handler/game/notification/sendNotification.js';
 import { activePlayers, playerState } from '../sessions/sessions.js';
 
 export const onEnd = (socket) => async () => {
