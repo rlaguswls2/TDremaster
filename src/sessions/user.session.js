@@ -1,4 +1,35 @@
 import { activePlayers, matchQueue } from './sessions.js';
+import { findHighScoreById } from '../db/user/user.db.js';
+import { userHighScore } from './sessions.js';
+
+export class UserState {
+  constructor(socket, id) {
+    this.id = id;
+    this.socket = socket;
+    this.highScore = 0;
+  }
+
+  async setHighScore() {
+    this.highScore = await findHighScoreById(this.id);
+  }
+}
+
+export const getHighScore = (socket) => {
+  // 최고점수 업데이트할때 사용?
+  for (let i = 0; i < userHighScore.length; i++) {
+    if (userHighScore[i].id === socket) {
+      return userHighScore[i];
+    }
+  }
+};
+
+export const removeHighScoreState = (socket) => {
+  for (let i = 0; i < userHighScore.length; i++) {
+    if (userHighScore[i].id === socket) {
+      return userHighScore.splice(i, 1);
+    }
+  }
+};
 
 function addToMatchQueue(player) {
   matchQueue.push(player);

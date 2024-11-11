@@ -7,8 +7,9 @@ import { generateTowers } from '../handler/game/towerPurchase.handler.js';
 import { playerState } from './sessions.js';
 
 export class PlayerState {
-  constructor(id, highScore) {
-    this.id = id;
+  constructor(socket, userId, highScore) {
+    this.socket = socket;
+    this.userId = userId;
     this.userGold = GAME_STATE.INITIAL_GOLD;
     this.baseHp = GAME_STATE.INITIAL_BASE_HP;
     this.maxHp = GAME_STATE.INITIAL_BASE_HP;
@@ -62,7 +63,7 @@ export class PlayerState {
 
 export const getPlayerState = (socket) => {
   for (let i = 0; i < playerState.length; i++) {
-    if (playerState[i].id === socket) {
+    if (playerState[i].socket === socket) {
       return playerState[i];
     }
   }
@@ -70,7 +71,7 @@ export const getPlayerState = (socket) => {
 
 export const removePlayerState = (socket) => {
   for (let i = 0; i < playerState.length; i++) {
-    if (playerState[i].id === socket) {
+    if (playerState[i].socket === socket) {
       return playerState.splice(i, 1);
     }
   }

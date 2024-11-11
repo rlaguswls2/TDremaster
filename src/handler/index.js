@@ -1,7 +1,6 @@
 import { PACKET_TYPE } from '../constants/header.js';
 import { login } from './auth/login.handler.js';
 import { register } from './auth/register.handler.js';
-import { gameEndHandler } from './game/gameEnd.handler.js';
 import { matching } from './game/match.handler.js';
 import { monsterAttackBaseHandler } from './game/monsterAttackBase.handler.js';
 import { monsterDeathHandler } from './game/monsterDeath.handler.js';
@@ -37,10 +36,6 @@ const handlers = {
   [PACKET_TYPE.MONSTER_ATTACK_BASE_REQUEST]: {
     handler: monsterAttackBaseHandler,
     protoType: 'test.C2SMonsterAttackBaseRequest',
-  },
-  [PACKET_TYPE.GAME_END_REQUEST]: {
-    handler: gameEndHandler,
-    protoType: 'test.C2SGameEndRequest',
   },
   [PACKET_TYPE.MONSTER_DEATH_NOTIFICATION]: {
     handler: monsterDeathHandler,
