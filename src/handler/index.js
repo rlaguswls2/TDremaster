@@ -37,7 +37,7 @@ const handlers = {
     handler: monsterAttackBaseHandler,
     protoType: 'test.C2SMonsterAttackBaseRequest',
   },
-  [PACKET_TYPE.MONSTER_DEATH_NOTIFICATION]: {
+  [PACKET_TYPE.GAME_END_REQUEST]: {
     handler: monsterDeathHandler,
     protoType: 'test.S2CEnemyMonsterDeathNotification',
   },
