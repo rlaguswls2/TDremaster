@@ -30,6 +30,11 @@ export const findHighScoreById = async (id) => {
   return rows[0].highest_score;
 };
 
-export const updateHighScore = async (x, y, deviceId) => {
-  await dbPool.query(USER_QUERIES.UPDATE_USER_LOCATION, [x, y, deviceId]);
+export const updateHighScoreById = async (id, gameScore) => {
+  const currentHighScore = await findHighScoreById(id);
+  if (gameScore > currentHighScore) {
+    await dbPool.query(USER_QUERIES.UPDATE_USER_HIGHSCORE, [gameScore, id]);
+    return true;
+  }
+  return false;
 };

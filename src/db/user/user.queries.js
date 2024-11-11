@@ -4,4 +4,5 @@ export const USER_QUERIES = {
   UPDATE_USER_LOGIN: 'UPDATE user SET last_login = CURRENT_TIMESTAMP WHERE id = ?',//last login 수정
   UPDATE_USER_LOCATION: 'UPDATE user SET x_coord = ?, y_coord = ? WHERE device_id = ?',
   FIND_HIGHSCORE_BY_ID: 'SELECT highest_score FROM user WHERE id = ?',
+  UPDATE_USER_HIGHSCORE: 'UPDATE user SET highest_score = ? WHERE id = ?',
 };
