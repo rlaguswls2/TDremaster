@@ -2,6 +2,10 @@ import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
 import sendResponsePacket from '../../utils/response/createResponse.js';
+import { findUserById, updateUserLogin } from '../../db/user/user.db.js';
+import bcrypt from 'bcrypt';
+import { UserState } from '../../sessions/user.session.js';
+import { userHighScore } from '../../sessions/sessions.js';
 
 export const login = async ({ socket, payload }) => {
   try {
@@ -30,18 +34,18 @@ export const login = async ({ socket, payload }) => {
     // id와 password로 인증 로직 처리
 
     // ★★ 나중에 풀어야함=========================================================================================================================
-    // const existuser = await findUserById(id);
+    const existuser = await findUserById(id);
   
-    // if(existuser===null)//id가 일치하는지 확인
-    // {
-    //   console.log("Player is not exist!");
-    //   success=false;
-    // }
-    // if(!(await bcrypt.compare(password, existuser.password)))//비밀번호가 일치하는지 확인
-    // {
-    //   console.log("password is dismatch!");
-    //   success=false;
-    // }
+    if(existuser===null)//id가 일치하는지 확인
+    {
+      console.log("Player is not exist!");
+      success=false;
+    }
+    if(!(await bcrypt.compare(password, existuser.password)))//비밀번호가 일치하는지 확인
+    {
+      console.log("password is dismatch!");
+      success=false;
+    }
 
     
     //highscore불러오는 부분
@@ -57,7 +61,7 @@ export const login = async ({ socket, payload }) => {
     // S2CLoginResponse 메시지 생성 및 직렬화
     const S2CLoginResponse = protoMessages.test.S2CLoginResponse;
     const responsePayload = S2CLoginResponse.create({ success, message, jwtToken, failCode });
-    //updateUserLogin(id);
+    updateUserLogin(id);
     sendResponsePacket(socket, PACKET_TYPE.LOGIN_RESPONSE, {
       loginResponse: responsePayload,
     });
