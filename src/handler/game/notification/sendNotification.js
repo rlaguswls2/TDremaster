@@ -1,9 +1,42 @@
 import { PACKET_TYPE } from '../../../constants/header.js';
 import { getProtoMessages } from '../../../init/loadProto.js';
-import { getPlayerState, removePlayerState } from '../../../sessions/game.session.js';
-import { clearMatch, getHighScore, getOpponentSocket } from '../../../sessions/user.session.js';
-import { updateScores } from '../../../utils/db/highScoreUpdate.js';
 import sendResponsePacket from '../../../utils/response/createResponse.js';
+import { createGameStateData, createInitialGameState } from '../../../utils/state/createState.js';
+
+export const sendMatchStartNotification = (playerA, playerB) => {
+  const protoMessages = getProtoMessages();
+
+  // 초기 게임 상태 생성
+  const initialGameState = createInitialGameState();
+
+  // 각 플레이어의 게임 상태 데이터 생성
+  const A_GameState = createGameStateData(playerA);
+  const B_GameState = createGameStateData(playerB);
+
+  // 매칭 시작 알림 생성
+  const S2CMatchStartNotification = protoMessages.test.S2CMatchStartNotification;
+
+  const A_MatchStartNotification = S2CMatchStartNotification.create({
+    initialGameState,
+    playerData: A_GameState,
+    opponentData: B_GameState,
+  });
+
+  const B_MatchStartNotification = S2CMatchStartNotification.create({
+    initialGameState,
+    playerData: B_GameState,
+    opponentData: A_GameState,
+  });
+
+  // 각 플레이어에게 매칭 시작 알림 전송
+  sendResponsePacket(playerA, PACKET_TYPE.MATCH_START_NOTIFICATION, {
+    matchStartNotification: A_MatchStartNotification,
+  });
+
+  sendResponsePacket(playerB, PACKET_TYPE.MATCH_START_NOTIFICATION, {
+    matchStartNotification: B_MatchStartNotification,
+  });
+};
 
 export const sendEnemyTowerNotification = (opponentSocket, towerData) => {
   const protoMessages = getProtoMessages();
@@ -89,33 +122,25 @@ export const sendOpponentBaseHpUpdateNotification = (opponentSocket, baseHp) => 
   console.log(`상대방에게 기지 HP 업데이트 알림 전송: 현재 HP = ${baseHp}`);
 };
 
-// 게임 오버
+export const sendPlayerBaseHpUpdateNotification = (socket, baseHp) => {
+  const protoMessages = getProtoMessages();
+  const S2CUpdateBaseHPNotification = protoMessages.test.S2CUpdateBaseHPNotification;
+
+  const updateBaseHpNotification = S2CUpdateBaseHPNotification.create({
+    isOpponent: false,
+    baseHp,
+  });
+
+  sendResponsePacket(socket, PACKET_TYPE.UPDATE_BASE_HP_NOTIFICATION, {
+    updateBaseHpNotification,
+  });
+
+  console.log(`Base HP update notification sent to player: baseHp = ${baseHp}`);
+};
+
 export const sendGameOverNotification = async ({ socket }) => {
   try {
-    const opponentSocket = getOpponentSocket(socket);
-    if (!opponentSocket) return;
-
-    const playerStateB = getPlayerState(opponentSocket); // 애가 이긴 놈(항상 이김 상대가 나가면)
-    const userB = getHighScore(opponentSocket);
-    userB.highScore = Math.max(userB.highScore, playerStateB.score);
-
-    const playerStateA = getPlayerState(socket); // 진 놈
-    const userA = getHighScore(socket);
-    userA.highScore = Math.max(userA.highScore, playerStateA.score);
-
-    await updateScores(socket, opponentSocket);
-
-    removePlayerState(socket);
-    removePlayerState(opponentSocket);
-    clearMatch(socket);
-
     const protoMessages = getProtoMessages();
-
-    if (!protoMessages || !protoMessages.test) {
-      console.error('ProtoBuf 메시지가 올바르게 로드되지 않았습니다.');
-      return;
-    }
-
     const S2CGameOverNotification = protoMessages.test.S2CGameOverNotification;
     const myGameOverNotification = S2CGameOverNotification.create({
       isWin: false,

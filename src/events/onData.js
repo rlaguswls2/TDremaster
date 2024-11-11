@@ -12,22 +12,17 @@ export const onData = (socket) => async (data) => {
     console.log(`packetType: ${PACKET_NUMBER[packetType]}`);
 
     const versionLength = socket.buffer.readUInt8(2);
-    console.log(`versionLength: ${versionLength}`);
-
     const totalHeaderLength = TOTAL_LENGTH + versionLength;
 
     while (socket.buffer.length >= totalHeaderLength) {
       const version = socket.buffer.toString('utf8', VERSION_START, VERSION_START + versionLength);
-      console.log(`version: ${version}`);
 
       // sequence: 4바이트 읽기
       const sequence = socket.buffer.readUInt32BE(VERSION_START + versionLength);
-      console.log(`sequence: ${sequence}`);
 
       // payloadLength: 4바이트 읽기
       const payloadLengthPosition = VERSION_START + versionLength + SEQUENCE_SIZE;
       const payloadLength = socket.buffer.readUInt32BE(payloadLengthPosition);
-      console.log(`payloadLength: ${payloadLength}`);
 
       // 패킷의 전체 길이 (헤더와 payload 길이를 포함)
       const length = totalHeaderLength + payloadLength;
