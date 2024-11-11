@@ -29,3 +29,12 @@ export const findHighScoreById = async (id) => {
   const [rows] = await dbPool.query(USER_QUERIES.FIND_HIGHSCORE_BY_ID, [id]);
   return rows[0].highest_score;
 };
+
+export const updateHighScoreById = async (id, gameScore) => {
+  const currentHighScore = await findHighScoreById(id);
+  if (gameScore > currentHighScore) {
+    await dbPool.query(USER_QUERIES.UPDATE_USER_HIGHSCORE, [gameScore, id]);
+    return true;
+  }
+  return false;
+};

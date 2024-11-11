@@ -17,7 +17,6 @@ export const matching = ({ socket }) => {
       // 아니면 로그인 했을 때 가져온 값을 할당
       const playerAState = userHighScore.find((user) => user.socket === playerA);
       const playerBState = userHighScore.find((user) => user.socket === playerB);
-
       const highScoreA = playerAState ? playerAState.highScore : 0;
       const highScoreB = playerBState ? playerBState.highScore : 0;
 
