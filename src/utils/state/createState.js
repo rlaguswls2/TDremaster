@@ -51,27 +51,4 @@ export const createGameStateData = (socket) => {
   });
 
   return gameState;
-
-  // const gameState = GameState.create({
-  //   gold: 1000,
-  //   base: BaseData.create({ hp: 100, maxHp: 100 }),
-  //   highScore: 0,
-  //   towers: [
-  //     TowerData.create({ towerId: towerIds[0], x: 200, y: 350 }),
-  //     TowerData.create({ towerId: towerIds[1], x: 400, y: 400 }),
-  //     TowerData.create({ towerId: towerIds[2], x: 800, y: 350 }),
-  //   ],
-  //   monsters: [MonsterData.create({ monsterId: 1, monsterNumber: 1, level: 1 })],
-  //   monsterLevel: 1,
-  //   score: 0,
-  //   monsterPath: [
-  //     Position.create({ x: 200, y: 300 }),
-  //     Position.create({ x: 400, y: 350 }),
-  //     Position.create({ x: 800, y: 400 }),
-  //     Position.create({ x: 1400, y: 350 }),
-  //   ],
-  //   basePosition: Position.create({ x: 1400, y: 350 }),
-  // });
-
-  // return gameState;
 };
