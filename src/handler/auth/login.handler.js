@@ -1,9 +1,9 @@
 import jwt from 'jsonwebtoken'; //jwt토큰 발급을 위한 jwt 임포트
 import { PACKET_TYPE } from '../../constants/header.js';
 import { getProtoMessages } from '../../init/loadProto.js';
-import sendResponsePacket from '../../utils/response/createResponse.js';
-import { UserState } from '../../sessions/user.session.js';
 import { userHighScore } from '../../sessions/sessions.js';
+import { UserState } from '../../sessions/user.session.js';
+import sendResponsePacket from '../../utils/response/createResponse.js';
 
 export const login = async ({ socket, payload }) => {
   try {
@@ -11,15 +11,12 @@ export const login = async ({ socket, payload }) => {
 
     const GamePacket = protoMessages.test.GamePacket;
     const gamePacket = GamePacket.decode(payload);
-    console.log(`Decoded GamePacket:`, gamePacket);
 
     const loginRequest = gamePacket.loginRequest;
     if (!loginRequest) {
       throw new Error('Invalid payload type in GamePacket for login request.');
     }
     const { id, password } = loginRequest; //id와 password를 받아온다.
-
-    console.log(`in loginHandler.js data: ${id}, ${password}`);
 
     // newuser 로그인 시 id 와 highscore를 전달
     const newuser = new UserState(socket, id);
@@ -28,21 +25,6 @@ export const login = async ({ socket, payload }) => {
 
     //user가 존재하는지 확인
     const success = true; // 로그인 성공 여부를 예시로 설정
-
-    // id와 password로 인증 로직 처리
-
-    // ★★ 나중에 풀어야함=========================================================================================================================
-    //const existuser = await findUserById(id);
-    // if(existuser===null)//id가 일치하는지 확인
-    // {
-    //   console.log("Player is not exist!");
-    //   success=false;
-    // }
-    // if(!(await bcrypt.compare(password, existuser.password)))//비밀번호가 일치하는지 확인
-    // {
-    //   console.log("password is dismatch!");
-    //   success=false;
-    // }
 
     // 로그인 로직 처리 (예: ID와 비밀번호 검증)
     const message = success ? 'Login successful.' : 'Login failed.';
