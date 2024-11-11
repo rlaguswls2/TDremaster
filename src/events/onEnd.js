@@ -1,5 +1,6 @@
 import { sendGameOverNotification } from '../handler/game/notification/sendNotification.js';
 import { activePlayers, playerState } from '../sessions/sessions.js';
+import { removeHighScoreState } from '../sessions/user.session.js';
 
 export const onEnd = (socket) => async () => {
   removeHighScoreState(socket);
