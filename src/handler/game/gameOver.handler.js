@@ -1,5 +1,5 @@
 import { getPlayerState, removePlayerState } from '../../sessions/game.session.js';
-import { getHighScore, getOpponentSocket } from '../../sessions/user.session.js';
+import { clearMatch, getHighScore, getOpponentSocket } from '../../sessions/user.session.js';
 import { updateScores } from '../../utils/db/highScoreUpdate.js';
 import { sendGameOverNotification } from './notification/sendNotification.js';
 
