@@ -7,7 +7,6 @@ export class UserState {
     this.socket = socket;
     this.highScore = 0;
   }
-
   async setHighScore() {
     this.highScore = await findHighScoreById(this.id);
   }

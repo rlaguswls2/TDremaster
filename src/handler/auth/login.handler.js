@@ -23,7 +23,7 @@ export const login = async ({ socket, payload }) => {
 
     // newuser 로그인 시 id 와 highscore를 전달
     const newuser = new UserState(socket, id);
-    await newuser.setHighScore();
+    await newuser.setHighScore(); // 처음 게임 로그인 시 highscore 정보 가져옴
     userHighScore.push(newuser);
 
     //user가 존재하는지 확인
