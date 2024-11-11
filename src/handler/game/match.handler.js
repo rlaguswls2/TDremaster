@@ -15,6 +15,7 @@ export const matching = ({ socket }) => {
       const { playerA, playerB } = players;
       // 여기서 db로부터 highScore 가져와서 0대신 할당 0은 임시값
       // 아니면 로그인 했을 때 가져온 값을 할당
+      // 여기서 쿼리 돌리면 끝
       const playerAState = userHighScore.find((user) => user.socket === playerA);
       const playerBState = userHighScore.find((user) => user.socket === playerB);
       const highScoreA = playerAState ? playerAState.highScore : 0;

@@ -2,10 +2,7 @@ import { PACKET_TYPE } from '../../../constants/header.js';
 import { getProtoMessages } from '../../../init/loadProto.js';
 import { removePlayerState } from '../../../sessions/game.session.js';
 import { clearMatch, getOpponentSocket } from '../../../sessions/user.session.js';
-import {
-  clearMatch,
-  getOpponentSocket,
-} from '../../../sessions/user.session.js';
+import { updateScores } from '../../../utils/db/highScoreUpdate.js';
 import sendResponsePacket from '../../../utils/response/createResponse.js';
 
 export const sendEnemyTowerNotification = (opponentSocket, towerData) => {
@@ -98,6 +95,7 @@ export const sendGameOverNotification = async ({ socket }) => {
     const opponentSocket = getOpponentSocket(socket);
     if (!opponentSocket) return;
 
+    await updateScores(socket, opponentSocket);
     removePlayerState(socket);
     removePlayerState(opponentSocket);
     clearMatch(socket);

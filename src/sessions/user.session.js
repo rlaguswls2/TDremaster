@@ -1,6 +1,5 @@
-import { activePlayers, matchQueue } from './sessions.js';
 import { findHighScoreById } from '../db/user/user.db.js';
-import { userHighScore } from './sessions.js';
+import { activePlayers, matchQueue, userHighScore } from './sessions.js';
 
 export class UserState {
   constructor(socket, id) {
@@ -58,4 +57,4 @@ function clearMatch(playerSocket) {
   }
 }
 
-export { addToMatchQueue, getMatchPlayers, getOpponentSocket, clearMatch };
+export { addToMatchQueue, clearMatch, getMatchPlayers, getOpponentSocket };
